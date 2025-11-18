@@ -1,0 +1,15 @@
+package kfs.golem.comp;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import kfs.golem.ecs.KfsComp;
+
+public class TextureComponent implements KfsComp {
+    public TextureRegion texture;
+    public float alpha = 1f;
+    public Color tint = new Color(1, 1, 1, 1);
+    public boolean windowSize = false;
+
+    public TextureComponent(TextureRegion texture, boolean fullSize) { this.texture = texture; this.windowSize = fullSize; }
+}

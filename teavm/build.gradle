@@ -1,0 +1,67 @@
+plugins {
+  id 'java'
+  id 'org.gretty' version "3.1.5"
+}
+
+gretty {
+  contextPath = '/'
+  extraResourceBase 'build/dist/webapp'
+}
+
+sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
+project.ext.mainClassName = "kfs.golem.teavm.TeaVMBuilder"
+eclipse.project.name = appName + "-teavm"
+
+// This must be at least 11, and no higher than the JDK version this project is built with.
+java.targetCompatibility = "11"
+// This should probably be equal to targetCompatibility, above. This only affects the TeaVM module.
+java.sourceCompatibility = "11"
+
+
+dependencies {
+  implementation "com.github.xpenatan.gdx-teavm:backend-teavm:$gdxTeaVMVersion"
+  implementation project(':core')
+
+}
+
+tasks.register("buildJavaScript", JavaExec) {
+  dependsOn classes
+  setDescription("Transpile bytecode to JavaScript via TeaVM")
+  mainClass.set(project.mainClassName)
+  setClasspath(sourceSets.main.runtimeClasspath)
+}
+build.dependsOn buildJavaScript
+
+tasks.register("run") {
+  description = "Run the JavaScript application hosted via a local Jetty server at http://localhost:8080/"
+  dependsOn(buildJavaScript, tasks.named("jettyRun"))
+}
+
+tasks.register('packageTeavmTar', Tar) {
+  dependsOn copyResources
+  archiveBaseName = 'golem'
+  archiveVersion = ''
+  destinationDirectory = file("$buildDir/dist")
+
+  from("$buildDir/dist/webapp") {
+    include '**/*'
+    exclude '**/.DS_Store'
+    exclude '**/._*'
+    exclude 'WEB-INF'
+  }
+
+  compression = Compression.GZIP
+  archiveExtension = "tar.gz"
+}
+
+tasks.register('uploadTeavmTar', Exec) {
+  dependsOn 'packageTeavmTar'
+
+  commandLine "bash", "-c", "scp $buildDir/dist/golem.tar.gz walk:"
+}
+
+tasks.register('remoteInstall', Exec) {
+  dependsOn 'uploadTeavmTar'
+
+  commandLine "bash", "-c", "ssh walk 'rm -rf www/kuba/gm006;mkdir www/kuba/gm006;cd www/kuba/gm006;tar -zxf ~/golem.tar.gz;rm ~/golem.tar.gz'"
+}
