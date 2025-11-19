@@ -10,7 +10,6 @@ gretty {
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 project.ext.mainClassName = "kfs.golem.teavm.TeaVMBuilder"
-eclipse.project.name = appName + "-teavm"
 
 // This must be at least 11, and no higher than the JDK version this project is built with.
 java.targetCompatibility = "11"
@@ -20,6 +19,8 @@ java.sourceCompatibility = "11"
 
 dependencies {
   implementation "com.github.xpenatan.gdx-teavm:backend-teavm:$gdxTeaVMVersion"
+  implementation "com.github.xpenatan.gdx-teavm:gdx-freetype-teavm:$gdxTeaVMVersion"
+
   implementation project(':core')
 
 }

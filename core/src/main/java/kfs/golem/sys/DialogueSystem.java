@@ -1,7 +1,6 @@
 package kfs.golem.sys;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kfs.golem.GolemMain;
 import kfs.golem.comp.DialogueComponent;
 import kfs.golem.comp.PositionComponent;
@@ -33,18 +32,6 @@ public class DialogueSystem implements KfsSystem {
             String text = dlg.lines[dlg.index];
 
             // poetické bubliny + jemné vyblednutí
-        }
-    }
-
-    @Override
-    public void render(SpriteBatch batch) {
-        for (Entity e : golemMain.world.getEntitiesWith(DialogueComponent.class)) {
-            DialogueComponent dlg = golemMain.world.getComponent(e, DialogueComponent.class);
-            if (!dlg.active) continue;
-            PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
-
-            font.setColor(1f, 1f, 1f, Math.min(1f, dlg.timeVisible));
-            font.draw(batch, dlg.lines[dlg.index], pos.position.x, pos.position.y + 140);
         }
     }
 

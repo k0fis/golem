@@ -1,0 +1,56 @@
+
+plugins {
+  id 'java'
+  id 'application'
+}
+
+group = 'kfs.golem.tools'
+version = 1
+
+repositories {
+  mavenCentral()
+  maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // just in case
+}
+
+def gdxVersion = "1.11.0"   // uprav podle potřeby
+def lwjglVersion = "3.3.1"
+
+
+dependencies {
+  implementation project(":core")
+  implementation "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+
+  implementation "com.badlogicgames.gdx:gdx:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+  implementation "com.badlogicgames.gdx:gdx-tools:$gdxVersion" // obsahuje BitmapFontWriter / PixmapPacker
+  // natives for desktop (LWJGL3)
+  runtimeOnly "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+  runtimeOnly "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+  runtimeOnly "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+}
+
+application {
+  mainClass = 'kfs.golem.tools.FontBatchGenerator'
+}
+
+sourceCompatibility = 1.11
+targetCompatibility = 1.11
+
+
+// ----------------------------------------
+// Custom Gradle task: generování bitmap fontů
+// ----------------------------------------
+task generateBitmapFonts(type: JavaExec) {
+  dependsOn( compileJava )
+
+  group = "fonts"
+  description = "Generuje bitmap fonty z TTF pro TeaVM"
+
+  classpath = sourceSets.main.runtimeClasspath
+  main = "kfs.golem.tools.FontBatchGenerator" // plná cesta, pokud máš package např. "com.example.FontBatchGenerator"
+
+  // volitelné: předání parametrů jako environment variables
+   environment "FONT_TTF", "../assets/fonts/MedievalSharp/MedievalSharp.ttf"
+   environment "OUTPUT_DIR", "../assets/fonts/generated/"
+}

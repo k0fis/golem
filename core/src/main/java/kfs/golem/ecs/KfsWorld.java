@@ -128,11 +128,6 @@ public class KfsWorld implements KfsSystem {
     }
 
     @Override
-    public void render(SpriteBatch batch) {
-        runSystems(systemBase -> systemBase.render(batch));
-    }
-
-    @Override
     public void done() {
         runSystems(KfsSystem::done);
     }

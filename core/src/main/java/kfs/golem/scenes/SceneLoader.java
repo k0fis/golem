@@ -2,11 +2,13 @@ package kfs.golem.scenes;
 
 import kfs.golem.GolemMain;
 
+import java.util.ServiceLoader;
+
 public interface SceneLoader {
 
     void load(GolemMain engine);
 
-    default void unload(GolemMain engine) {
-        engine.world.reset();
-    }
+    void unload(GolemMain engine);
+
+    Class<? extends SceneLoader> getSLClass();
 }

@@ -8,5 +8,4 @@ public interface KfsSystem {
     default void done() {}
 
     default void update(float delta) {}
-    default void render(SpriteBatch batch) {}
 }

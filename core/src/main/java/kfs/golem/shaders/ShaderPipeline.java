@@ -2,6 +2,7 @@ package kfs.golem.shaders;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
+import kfs.golem.ecs.EntityFilter;
 
 public class ShaderPipeline {
 
@@ -14,15 +15,15 @@ public class ShaderPipeline {
         effects.add(effect);
     }
 
-    public void setShader(SpriteBatch batch) {
+    public void setShader(SpriteBatch batch, EntityFilter filter) {
         for (ShaderEffect effect : effects) {
-            effect.setShader(batch);
+            effect.setShader(batch, filter);
         }
     }
 
-    public void setUniforms(float delta) {
+    public void setUniforms(float delta, EntityFilter filter) {
         for (ShaderEffect effect : effects) {
-            effect.setUniforms(delta);
+            effect.setUniforms(delta, filter);
         }
     }
 

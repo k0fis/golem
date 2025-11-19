@@ -1,7 +1,5 @@
 package kfs.golem.sys;
 
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import kfs.golem.GolemMain;
 import kfs.golem.comp.SubtitleComponent;
 import kfs.golem.ecs.Entity;
@@ -9,12 +7,10 @@ import kfs.golem.ecs.KfsSystem;
 
 public class SubtitleSystem implements KfsSystem {
 
-    private final BitmapFont font;
     private final GolemMain golemMain;
 
     public SubtitleSystem(GolemMain golemMain) {
         this.golemMain = golemMain;
-        font = new BitmapFont();
     }
 
     @Override
@@ -27,34 +23,26 @@ public class SubtitleSystem implements KfsSystem {
 
             if (t.time < t.fadeIn) {
                 // FADE IN
-                t.alpha = t.time / t.fadeIn;
+                t.color.a = t.time / t.fadeIn;
 
             } else if (t.time < t.fadeIn + t.delay) {
                 // DELAY - full visibility
-                t.alpha = 1f;
+                t.color.a = 1f;
 
             } else if (t.time < total) {
                 // FADE OUT
                 float fadeOutTime = t.time - (t.fadeIn + t.delay);
-                t.alpha = 1f - (fadeOutTime / t.fadeOut);
+                t.color.a = 1f - (fadeOutTime / t.fadeOut);
 
             } else {
                 // DONE
-                t.alpha = 0f;
+                t.color.a = 0f;
+                if (t.onComplete != null) {
+                    t.onComplete.run();
+                }
                 golemMain.world.deleteEntity(subtitle);
-                t.onComplete.run();
             }
         }
     }
 
-    @Override
-    public void render(SpriteBatch batch) {
-        for (Entity subtitle : golemMain.world.getEntitiesWith(SubtitleComponent.class)) {
-            SubtitleComponent sc = golemMain.world.getComponent(subtitle, SubtitleComponent.class);
-
-            font.setColor(1f, 1f, 1f, sc.alpha);
-            font.draw(batch, sc.text, sc.position.x, sc.position.y);
-        }
-
-    }
 }
