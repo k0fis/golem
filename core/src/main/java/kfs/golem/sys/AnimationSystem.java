@@ -21,7 +21,7 @@ public class AnimationSystem implements KfsSystem {
             if (ac.enabled) {
                 TextureComponent tc = golemMain.world.getComponent(e, TextureComponent.class);
                 ac.stateTime += delta;
-                tc.texture = ac.animation.getKeyFrame(ac.stateTime, true);
+                //tc.texture = ac.animation.getKeyFrame(ac.stateTime, true);
             }
         }
     }

@@ -1,5 +1,6 @@
 package kfs.golem.sys;
 
+import com.badlogic.gdx.math.Rectangle;
 import kfs.golem.GolemMain;
 import kfs.golem.comp.ClickComponent;
 import kfs.golem.comp.InteractiveComponent;
@@ -20,18 +21,15 @@ public class InteractiveSystem implements KfsSystem {
         for (Entity click : golemMain.world.getEntitiesWith(ClickComponent.class)) {
             ClickComponent cc = golemMain.world.getComponent(click, ClickComponent.class);
 
-            // camera: Vector clickPoint = getEngine().getSystem(RenderSystem.class).getCamera().unproject(cc.click);
-
             for (Entity interactiveEntity : golemMain.world.getEntitiesWith(InteractiveComponent.class, PositionComponent.class)) {
                 PositionComponent pc = golemMain.world.getComponent(interactiveEntity, PositionComponent.class);
                 InteractiveComponent ic = golemMain.world.getComponent(interactiveEntity, InteractiveComponent.class);
-
-                if (!ic.isEnabled) continue;
-
-                float d = cc.click.dst(pc.position);
-                if (d < ic.radius) {
-                    ic.onInteract.run();
-                    break;
+                if (ic.isEnabled) {
+                    Rectangle rect = new Rectangle(pc.position.x, pc.position.y, ic.size.x, ic.size.y);
+                    if (rect.contains(cc.click)) {
+                        ic.onInteract.run();
+                        break;
+                    }
                 }
             }
             golemMain.world.deleteEntity(click);

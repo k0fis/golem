@@ -14,8 +14,8 @@ public class TeaVMLauncher {
         //config.width = 640;
         //config.height = 480;
         //// If width and height are both 0, then the app will use all available space.
-        config.width = 0;
-        config.height = 0;
+        config.width = 1200;
+        config.height = 800;
         new TeaApplication(new GolemMain(), config);
     }
 }

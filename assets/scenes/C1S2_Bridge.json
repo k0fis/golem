@@ -1,0 +1,40 @@
+{
+  "background": {
+    "file": "images/prague_bridge.png",
+    "parallax_speedFactor": 0.05,
+    "amplitude": 15
+  },
+  "shader": "FOG",
+  "subtitle": {
+    "initDelay": 0.75,
+    "textColor": "#000000ff",
+    "maxLines": 15,
+    "scrollSpeed": 15,
+    "endDuration": 10,
+    "text": [
+      "A právě uprostřed té bílé prázdnoty",
+      "se objevuje silueta Karlova mostu",
+      "nejasná, rozostřená, téměř snová.",
+      "",
+      "Most stojí jako tmavý hřbet starého kamene,",
+      "který odolal staletím. Jeho sochy,",
+      "jinak pevné a majestátní,",
+      "vypadají v mlze živěji než obvykle.",
+      "Obrysy postav se rozpouštějí a opět skládají,",
+      "jako by dýchaly s městem. Vypadá to,",
+      "že kdyby člověk mrkl v nesprávnou chvíli,",
+      "některá z nich by mohla změnit polohu.",
+      "",
+      "Voda pod mostem je tichá.",
+      "A ticho je tu hutnější než jinde — skoro posvátné.",
+      "Po mostě prochází jen pár ranních chodců,",
+      "jejich kroky tlumí mokré kameny.",
+      "Občas je doprovází ptačí křik, ozvěna z dálky,",
+      "která se rozplyne v mlze dřív,",
+      "než doputuje ke břehu.",
+      " A přesto mají lidé na mostě pocit, že nejsou sami.",
+      "Jako by se z mlhy dívalo něco,",
+      "co zná most lépe než kdokoli živý."
+    ]
+  }
+}

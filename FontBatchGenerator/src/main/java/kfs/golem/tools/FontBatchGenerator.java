@@ -19,7 +19,7 @@ public class FontBatchGenerator {
     private static final String OUTPUT_DIR = "../assets/fonts/MedievalSharp/";
 
     // Velikosti, které chceme generovat
-    private static final int[] SIZES = {24, 36, 48, 64};
+    private static final int[] SIZES = {12, 16}; //{24, 36, 48, 64};
 
     // Všechny znaky, které chceme mít (česká diakritika + interpunkce)
     private static final String CHARACTERS =

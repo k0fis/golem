@@ -7,7 +7,10 @@ public class ClickComponent implements KfsComp {
 
     public final Vector2 click;
 
+    public ClickComponent(Vector2 click) {
+        this.click = click;
+    }
     public ClickComponent(float x, float y) {
-        click = new Vector2(x, y);
+        this(new Vector2(x, y));
     }
 }

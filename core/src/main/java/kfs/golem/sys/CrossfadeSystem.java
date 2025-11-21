@@ -20,7 +20,7 @@ public class CrossfadeSystem extends ShaderEffect implements KfsSystem {
     private final Texture dummyWhiteTexture;
 
     public CrossfadeSystem(GolemMain golem) {
-        super(golem, GolemMain.ShaderType.CROSS_FADE, "shaders/crossfade.vert", "shaders/crossfade.frag");
+        super(golem, "shaders/crossfade.vert", "shaders/crossfade.frag");
 
         dummyWhitePixel = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         dummyWhitePixel.setColor(1, 1, 1, 1);
@@ -55,8 +55,8 @@ public class CrossfadeSystem extends ShaderEffect implements KfsSystem {
         for (Entity e : golemMain.world.getEntitiesWith(CrossfadeComponent.class)) {
             CrossfadeComponent cc = golemMain.world.getComponent(e, CrossfadeComponent.class);
 
-            batch.begin();
             batch.setShader(shader);
+            batch.begin();
             shader.bind();
             shader.setUniformf("u_fade", cc.fade);
 

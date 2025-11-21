@@ -4,18 +4,17 @@ import kfs.golem.GolemMain;
 import kfs.golem.comp.ShaderComponent;
 import kfs.golem.ecs.Entity;
 
-import static kfs.golem.shaders.ShaderType.FOG_SEPIA_SLIDE;
+public class Fog2Effect extends ShaderEffect {
 
-
-public class FogSepiaSlideEffect extends ShaderEffect {
-
-    public FogSepiaSlideEffect(GolemMain golem) {
-        super(golem,"shaders/fog_sepia_slide.vert", "shaders/fog_sepia_slide.frag");
+    public Fog2Effect(GolemMain golem) {
+        super(golem,"shaders/fog.vert", "shaders/fog2.frag");
     }
 
     @Override
     protected void setUniforms(Entity e, ShaderComponent sc, float delta) {
         setTime(e, sc);
         setResolution(e, sc);
+        float introTime =  sc.time / 3f;
+        shader.setUniformf("u_introProgress", introTime);
     }
 }

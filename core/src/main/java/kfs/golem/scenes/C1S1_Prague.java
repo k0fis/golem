@@ -1,41 +1,34 @@
 package kfs.golem.scenes;
 
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import kfs.golem.GolemMain;
-import kfs.golem.comp.SceneIdComponent;
-import kfs.golem.comp.ShaderComponent;
+import kfs.golem.comp.PositionComponent;
+import kfs.golem.comp.SubtitleMultilineComponent;
 import kfs.golem.comp.TimerComponent;
 import kfs.golem.ecs.Entity;
+import kfs.golem.utils.BubbleStyle;
 
-import java.util.ArrayList;
-import java.util.List;
+public class C1S1_Prague extends SceneLoader {
 
-public class C1S1_Prague implements SceneLoader {
-
-    private List<Entity> entities = new ArrayList<>();
-
-    @Override
-    public void load(GolemMain engine) {
-        Entity bgEntity = engine.createLayer("images/prague_mid.png", 0.3f);
-        engine.world.addComponent(bgEntity, new SceneIdComponent(getClass()));
-        engine.world.addComponent(engine.world.createEntity(), new TimerComponent(3f, ()->{
-            Entity subtitle = engine.createSubtitle("Město se probouzí. Dýchá těžce, jako starý člověk, který nespal klidně.",
-                Color.BLACK, ()->engine.loadScene(new C1S2_Laboratory()));
-            engine.world.addComponent(subtitle, new SceneIdComponent(getClass()));
-            entities.add(subtitle);
-        }));
-        engine.world.addComponent(bgEntity, new ShaderComponent(GolemMain.ShaderType.FOG_SEPIA_SLIDE, bgEntity));
-        entities.add(bgEntity);
-
+    public C1S1_Prague(GolemMain golem) {
+        super(golem, "scenes/C1S1_Prague.json");
     }
 
     @Override
-    public void unload(GolemMain engine) {
-        if (entities != null) {
-            for (Entity entity : entities) {
-                engine.world.deleteEntity(entity);
-            }
+    public void load() {
+        super.load();
+        createTimeAfterSubtitlesForNextScene(5, new C1S2_Bridge(engine));
+
+        createDialog(" > > ",
+            new Vector2(1070, 720), () -> engine.loadScene(new C1S2_Bridge(engine)),
+            BubbleStyle.BubbleTail.NONE);
+
+
+        Entity lamp = textures.get("c1s1-lamp-1");
+        if (lamp == null) {
+            throw new RuntimeException("lamp is null");
         }
+
     }
 
     @Override

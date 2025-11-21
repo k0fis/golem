@@ -6,10 +6,10 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import kfs.golem.ecs.KfsComp;
 
 public class TextureComponent implements KfsComp {
-    public TextureRegion texture;
+    public Texture texture;
     public float alpha = 1f;
     public Color tint = new Color(1, 1, 1, 1);
     public boolean windowSize = false;
 
-    public TextureComponent(TextureRegion texture, boolean fullSize) { this.texture = texture; this.windowSize = fullSize; }
+    public TextureComponent(Texture texture, boolean fullSize) { this.texture = texture; this.windowSize = fullSize; }
 }

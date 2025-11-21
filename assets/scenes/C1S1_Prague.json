@@ -1,0 +1,75 @@
+{
+  "background": {
+    "file": "images/prague_mid.png",
+    "parallax_speedFactor": 0.3,
+    "amplitude": 5
+  },
+  "shader": "FOG_SEPIA_SLIDE",
+  "subtitle": {
+    "initDelay": 0.75,
+    "textColor": "#000000ff",
+    "maxLines": 15,
+    "scrollSpeed": 15,
+    "endDuration": 10,
+    "text": [
+      "Praha se pomalu probouzí pod těžkou,",
+      "stříbřitě šedou mlhou. Podobá se přikrývce,",
+      "která z hladiny Vltavy stoupá vzhůru",
+      "a líně se přelévá přes staré střechy.",
+      "Obrysy věží, chrámů a věžiček sotva",
+      "prorážejí temnou,",
+      "studenou masu — jako by se město snažilo",
+      "samo sebe skrýt.",
+      "",
+      "Komíny starých domů vydechují tenké",
+      "pruhy kouře, které se okamžitě vsáknou",
+      "do mlhy, takže není jasné,",
+      "kde končí kouř a začíná vzduch.",
+      "Ulicemi zní tlumené kroky ranních chodců,",
+      "téměř neslyšné pod měkkým mlžným filtrem.",
+      "V šedi je slyšet jen vzdálený hluk a",
+      "kapání vody ze střešních okapů.",
+      "",
+      "Staré město působí opuštěněji než kdy jindy.",
+      "Jako by drželo dech."
+    ]
+  },
+  "textures": [
+    {
+      "id" : "c1s1-lamp-1",
+      "path":  "textures/lamp.png",
+      "posX" : 1000,
+      "posY": 400,
+      "width": 80,
+      "height": 100,
+      "shader": "LAMP"
+    }
+  ],
+  "bubbles": [
+    {
+      "id": "narration1",
+      "type": "narration",
+      "text": "Ranní mlha se líně válí mezi pražskými střechami.",
+      "textColor": "#ffffffff",
+      "bubbleColor": "#000000ff",
+      "initDelay": 3.0,
+      "duration": 5.0
+    },
+    {
+      "id": "dialog1",
+      "dialogIndex": 1,
+      "type": "dialog",
+      "speaker": "Anna",
+      "text": "Vidíš to? Jakoby město samo něco tajilo...",
+      "duration": 4.0
+    },
+    {
+      "id": "dialog2",
+      "dialogIndex": 2,
+      "type": "dialog",
+      "speaker": "Borek",
+      "text": "Jo. Něco je špatně.",
+      "duration": 3.0
+    }
+  ]
+}

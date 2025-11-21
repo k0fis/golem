@@ -77,14 +77,14 @@ void main() {
     // ------------------------------------------------
     // Finální alfa mlhy s plynulým fade-in
     // ------------------------------------------------
-    float fogAlpha = clamp(alpha1 + alpha2 + alpha3, 0.0, 0.8);
+    float fogAlpha = clamp(alpha1 + alpha2 + alpha3, 0.0, 0.4);
     float fade = smoothstep(0.0, 1.0, u_introProgress-1.2);
     fogAlpha *= fade;
 
     // ------------------------------------------------
     // Barva mlhy
     // ------------------------------------------------
-    vec3 fogColor = vec3(0.90, 0.78, 0.55);
+    vec3 fogColor = vec3(0.50, 0.42, 0.25);
 
     // ------------------------------------------------
     // Finální barva

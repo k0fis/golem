@@ -1,0 +1,45 @@
+{
+  "background": {
+    "file": "images/dark_street.png",
+    "parallax_speedFactor": 0.1,
+    "amplitude": 5
+  },
+  "shader": "FOG2",
+  "subtitle": {
+    "initDelay": 0.75,
+    "textColor": "#ffffffff",
+    "maxLines": 15,
+    "scrollSpeed": 15,
+    "endDuration": 10,
+    "text": [
+      "Jakmile most zmizí za závojem mlhy, Praha mění tvář.",
+      "Ulice se zužují, lámou do nečekaných úhlů,",
+      "a rozbíhají do míst,",
+      "která na mapách vypadají jako slepé konce.",
+      "Jenže naživo slepá nejsou. Praha má vlastní logiku:",
+      "neříká, kam tě vede, jen testuje, jestli se necháš vést.",
+      "V jedné z takových postranních uliček je slyšet klapot bot,",
+      "který nepatří nikomu v dohledu.",
+      "Pravé světlo lampy se třpytí na mokrých cihlách,",
+      "ale na levé straně je tma, až nepřirozeně hluboká.",
+      "A v té tmě se něco hýbe.",
+      "Možná jen stékající voda… nebo stín, který tam před chvílí nebyl.",
+      "V otevřených průchodech cítit vlhký chlad",
+      "jako by každý vchod vedl do jiného století.",
+      "Někde z dálky voní káva, z jiného okna vychází vůně starého papíru",
+      "a inkoustu.",
+      "Domy jsou tu tak těsně u sebe, že by si člověk mohl myslet,",
+      "že si šeptají.",
+      "",
+      "A Praha šeptá.",
+      "Někdy jen tak tiše, že tomu porozumí jen ti, kdo poslouchají.",
+      "",
+      "Ve vzduchu cítit zvláštní napětí. Neviditelné, ale hutné.",
+      "Lidé odtud spěchají pryč.",
+      "Mlha tady není náhodná.",
+      "Drží se těchto míst s podezřelou vytrvalostí",
+      "jako by chránila tajemství,",
+      " která se nehodí odhalovat při denním světle."
+    ]
+  }
+}
