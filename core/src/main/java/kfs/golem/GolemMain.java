@@ -90,11 +90,14 @@ public class GolemMain extends ApplicationAdapter {
         world.update(deltaTime);
 
         fbCurrent.begin();
-        shaderPipeline.setShader(batch, filterSceneCurrent);
         batch.begin();
         world.getSystem(RenderSystem.class).render(batch, filterSceneCurrent);
+        batch.end();
+        world.getSystem(RenderSystem.class).renderTexturesWithShader(batch, filterSceneCurrent);
+
+        shaderPipeline.setShader(batch, filterSceneCurrent);
         shaderPipeline.setUniforms(deltaTime, filterSceneCurrent);
-        //batch.end();
+
         fbCurrent.end();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -103,9 +106,10 @@ public class GolemMain extends ApplicationAdapter {
             fbOld.begin();
             shaderPipeline.setShader(batch, filterSceneOld);
             batch.begin();
-            world.getSystem(RenderSystem.class).render(batch, filterSceneOld);
             shaderPipeline.setUniforms(deltaTime, filterSceneOld);
-            //batch.end(); -> shrader in render ends transactions
+            world.getSystem(RenderSystem.class).render(batch, filterSceneOld);
+            batch.end();
+            world.getSystem(RenderSystem.class).renderTexturesWithShader(batch, filterSceneOld);
             fbOld.end();
 
             inx = world.getSystem(CrossfadeSystem.class).render(batch, fbOld, fbCurrent);

@@ -61,16 +61,24 @@ public class RenderSystem implements KfsSystem {
                 renderDialogs(batch, e);
             }
         }
-        batch.end();
-        batch.setShader(null);
+    }
 
-        for (Entity e : lst1) {
-            if (filter.filter(e)) {
-                renderTexturesWithShader(batch, e);
-            }
+    public void renderTexturesWithShader(SpriteBatch batch, EntityFilter filter) {
+        for (Entity e : golemMain.world.getEntitiesWith(PositionComponent.class, TextureComponent.class, ShaderLocalComponent.class)) {
+            ShaderLocalComponent shaderLocal = golemMain.world.getComponent(e, ShaderLocalComponent.class);
+            if (!shaderLocal.enabled) continue;
+            TextureComponent tex = golemMain.world.getComponent(e, TextureComponent.class);
+            PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
+            SizeComponent sz = golemMain.world.getComponent(e, SizeComponent.class);
+            ShaderEffect se = golemMain.shaderPipeline.getEffect(shaderLocal.type);
+            se.shader.bind();
+            se.setUniforms(e, shaderLocal, 0.01f);
+            batch.setShader(se.shader);
+            batch.begin();
+            batch.draw(tex.texture, pos.position.x, pos.position.y, sz.width(), sz.height());
+            batch.end();
+            batch.setShader(null);
         }
-        batch.setShader(null);
-
     }
 
     private void renderTexturesFullScreen(SpriteBatch batch, Entity e) {
@@ -107,23 +115,7 @@ public class RenderSystem implements KfsSystem {
         batch.setColor(1f, 1f, 1f, 1f);
     }
 
-    private void renderTexturesWithShader(SpriteBatch batch, Entity e) {
-        ShaderLocalComponent shaderLocal = golemMain.world.getComponent(e, ShaderLocalComponent.class);
-        if (shaderLocal == null || !shaderLocal.enabled) return;
-        TextureComponent tex = golemMain.world.getComponent(e, TextureComponent.class);
-        PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
-        SizeComponent sz = golemMain.world.getComponent(e, SizeComponent.class);
-        ShaderEffect se = golemMain.shaderPipeline.getEffect(shaderLocal.type);
-        if (se != null) {
-            batch.begin();
-            se.shader.bind();
-            se.setUniforms(e, shaderLocal, 0.01f);
-            batch.setShader(se.shader);
-            batch.draw(tex.texture, pos.position.x, pos.position.y, sz.width(), sz.height());
-            batch.end();
-            batch.setShader(null);
-        }
-    }
+
 
     private void renderSubtitles(SpriteBatch batch, Entity subtitle) {
         SubtitleComponent sc = golemMain.world.getComponent(subtitle, SubtitleComponent.class);
