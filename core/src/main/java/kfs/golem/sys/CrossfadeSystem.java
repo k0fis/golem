@@ -1,89 +1,81 @@
 package kfs.golem.sys;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.FrameBuffer;
-import com.badlogic.gdx.math.Vector2;
-import kfs.golem.GolemMain;
+import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import kfs.golem.comp.CrossfadeComponent;
-import kfs.golem.comp.ShaderComponent;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsSystem;
-import kfs.golem.shaders.ShaderEffect;
+import kfs.golem.ecs.KfsWorld;
+import kfs.golem.utils.ShaderEffectCompileException;
 
-public class CrossfadeSystem extends ShaderEffect implements KfsSystem {
 
-    private final Pixmap dummyWhitePixel;
-    private final Texture dummyWhiteTexture;
+public class CrossfadeSystem implements KfsSystem {
 
-    public CrossfadeSystem(GolemMain golem) {
-        super(golem, "shaders/crossfade.vert", "shaders/crossfade.frag");
+    private final KfsWorld world;
+    private final ShaderProgram shader;
+    private final Mesh fullscreenQuad;
 
-        dummyWhitePixel = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        dummyWhitePixel.setColor(1, 1, 1, 1);
-        dummyWhitePixel.fill();
-        dummyWhiteTexture = new Texture(dummyWhitePixel);
+    public CrossfadeSystem(KfsWorld world) {
+        this.world = world;
+        this.shader = new ShaderProgram(Gdx.files.internal("shaders/crossfade.vert"),  Gdx.files.internal("shaders/crossfade.frag"));
+        if (!shader.isCompiled()) {
+            throw new ShaderEffectCompileException("shaders/crossfade.vert", "shaders/crossfade.frag", shader.getLog());
+        }
+
+        // Fullscreen quad (typický čtyřúhelník)
+        fullscreenQuad = new Mesh(true, 4, 6,
+            new VertexAttribute(VertexAttributes.Usage.Position, 3, "a_position"),
+            new VertexAttribute(VertexAttributes.Usage.TextureCoordinates, 2, "a_texCoord0"));
+
+        float[] verts = new float[] {
+            -1, -1, 0,   0, 0,
+            1, -1, 0,   1, 0,
+            1,  1, 0,   1, 1,
+            -1,  1, 0,   0, 1
+        };
+
+        short[] idx = new short[] { 0,1,2,  2,3,0 };
+
+        fullscreenQuad.setVertices(verts);
+        fullscreenQuad.setIndices(idx);
     }
+
 
     @Override
     public void update(float delta) {
-        for (Entity e : golemMain.world.getEntitiesWith(CrossfadeComponent.class)) {
-            CrossfadeComponent cc = golemMain.world.getComponent(e, CrossfadeComponent.class);
-            if (cc.time > cc.duration) {
-                if (cc.onFinish != null) {
-                    cc.onFinish.run();
-                }
-                golemMain.world.deleteEntity(e);
-            } else {
-                cc.time += delta;
-                cc.fade = cc.time / cc.duration;
-                if (cc.fade < 0) { cc.fade = 0;}
-                if (cc.fade > 1) { cc.fade = 1;}
-            }
+        for (Entity e : world.getEntitiesWith(CrossfadeComponent.class)) {
+            CrossfadeComponent cc = world.getComponent(e, CrossfadeComponent.class);
+            cc.time += delta;
+            float alpha = cc.time / cc.duration;
+            cc.fade = Math.min(1f, Math.max(0f, alpha));   // clamp
         }
     }
 
-    @Override
-    protected void setUniforms(Entity e, ShaderComponent sc, float delta) {
-    }
-
-    public int render(Batch batch, FrameBuffer fba, FrameBuffer fbb) {
+    public int render(Texture texA, Texture texB) {
         int inx = 0;
-        for (Entity e : golemMain.world.getEntitiesWith(CrossfadeComponent.class)) {
-            CrossfadeComponent cc = golemMain.world.getComponent(e, CrossfadeComponent.class);
+        for (Entity e : world.getEntitiesWith(CrossfadeComponent.class)) {
+            CrossfadeComponent cc = world.getComponent(e, CrossfadeComponent.class);
 
-            batch.setShader(shader);
-            batch.begin();
+            Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+            Gdx.gl.glDisable(GL20.GL_CULL_FACE);
+
             shader.bind();
-            shader.setUniformf("u_fade", cc.fade);
+            shader.setUniformf("u_alpha", cc.fade);
 
-            fba.getColorBufferTexture().bind(0);
-            shader.setUniformi("u_textureA", 0);
+            texA.bind(0);
+            shader.setUniformi("u_texA", 0);
 
-            fbb.getColorBufferTexture().bind(1);
-            shader.setUniformi("u_textureB", 1);
+            texB.bind(1);
+            shader.setUniformi("u_texB", 1);
 
-            // LibGDX chce bindnout texturu, kterou batch.draw používá:
-            Gdx.gl.glActiveTexture(GL20.GL_TEXTURE0);
-
-           Vector2 size = golemMain.getWorldSize();
-
-            batch.draw(dummyWhiteTexture, 0, 0, size.x, size.y, 0, 0, 1, 1);
-
-            batch.end();
-            batch.setShader(null);
+            fullscreenQuad.render(shader, GL20.GL_TRIANGLES);
             inx++;
         }
         return inx;
     }
 
-    @Override
     public void dispose() {
-        super.dispose();
-        dummyWhiteTexture.dispose();
-        dummyWhitePixel.dispose();
+        shader.dispose();
     }
 }

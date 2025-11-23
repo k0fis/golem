@@ -1,4 +1,4 @@
-package kfs.golem._scenes.scene01;
+package kfs.golem._backup;
 
 public class Laboratory  {
     /*

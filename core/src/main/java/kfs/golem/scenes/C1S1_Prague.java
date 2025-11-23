@@ -2,9 +2,6 @@ package kfs.golem.scenes;
 
 import com.badlogic.gdx.math.Vector2;
 import kfs.golem.GolemMain;
-import kfs.golem.comp.PositionComponent;
-import kfs.golem.comp.SubtitleMultilineComponent;
-import kfs.golem.comp.TimerComponent;
 import kfs.golem.ecs.Entity;
 import kfs.golem.utils.BubbleStyle;
 
@@ -17,10 +14,10 @@ public class C1S1_Prague extends SceneLoader {
     @Override
     public void load() {
         super.load();
-        createTimeAfterSubtitlesForNextScene(5, new C1S2_Bridge(engine));
+        createTimeAfterSubtitlesForNextScene(5, new C1S2_Bridge(golemMain));
 
         createDialog(" > > ",
-            new Vector2(1070, 720), () -> engine.loadScene(new C1S2_Bridge(engine)),
+            new Vector2(1070, 720), () -> golemMain.loadScene(new C1S2_Bridge(golemMain)),
             BubbleStyle.BubbleTail.NONE);
 
 

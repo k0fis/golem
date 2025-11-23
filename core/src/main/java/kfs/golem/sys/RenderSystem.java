@@ -9,10 +9,9 @@ import com.badlogic.gdx.utils.Align;
 import kfs.golem.GolemMain;
 import kfs.golem.comp.*;
 import kfs.golem.ecs.Entity;
-import kfs.golem.ecs.EntityFilter;
 import kfs.golem.ecs.KfsSystem;
-import kfs.golem.shaders.ShaderEffect;
 import kfs.golem.utils.BubbleStyle;
+import kfs.golem.utils.SceneEntityFilter;
 
 import java.util.List;
 
@@ -30,7 +29,7 @@ public class RenderSystem implements KfsSystem {
         layout = new GlyphLayout();
     }
 
-    public void render(SpriteBatch batch, EntityFilter filter) {
+    public void render(SpriteBatch batch, SceneEntityFilter filter) {
         List<Entity> lst1 = golemMain.world.getEntitiesWith(PositionComponent.class, TextureComponent.class);
         for (Entity e : lst1) {
             if (filter.filter(e)) {
@@ -63,24 +62,6 @@ public class RenderSystem implements KfsSystem {
         }
     }
 
-    public void renderTexturesWithShader(SpriteBatch batch, EntityFilter filter) {
-        for (Entity e : golemMain.world.getEntitiesWith(PositionComponent.class, TextureComponent.class, ShaderLocalComponent.class)) {
-            ShaderLocalComponent shaderLocal = golemMain.world.getComponent(e, ShaderLocalComponent.class);
-            if (!shaderLocal.enabled) continue;
-            TextureComponent tex = golemMain.world.getComponent(e, TextureComponent.class);
-            PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
-            SizeComponent sz = golemMain.world.getComponent(e, SizeComponent.class);
-            ShaderEffect se = golemMain.shaderPipeline.getEffect(shaderLocal.type);
-            se.shader.bind();
-            se.setUniforms(e, shaderLocal, 0.01f);
-            batch.setShader(se.shader);
-            batch.begin();
-            batch.draw(tex.texture, pos.position.x, pos.position.y, sz.width(), sz.height());
-            batch.end();
-            batch.setShader(null);
-        }
-    }
-
     private void renderTexturesFullScreen(SpriteBatch batch, Entity e) {
         TextureComponent tex = golemMain.world.getComponent(e, TextureComponent.class);
         if (tex.windowSize) {
@@ -102,17 +83,19 @@ public class RenderSystem implements KfsSystem {
     private void renderTextures(SpriteBatch batch, Entity e) {
         TextureComponent tex = golemMain.world.getComponent(e, TextureComponent.class);
         if (tex.windowSize) return;
-        ShaderLocalComponent shaderLocal = golemMain.world.getComponent(e, ShaderLocalComponent.class);
-        if ( shaderLocal != null) return;
         PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
         SizeComponent sz = golemMain.world.getComponent(e, SizeComponent.class);
-        batch.setColor(tex.tint.r, tex.tint.g, tex.tint.b, tex.alpha);
-        if (sz != null) {
-            batch.draw(tex.texture, pos.position.x, pos.position.y, sz.width(), sz.height());
-        } else {
-            batch.draw(tex.texture, pos.position.x, pos.position.y);
+        if ( tex.shader != null) {
+            tex.shader.apply(batch, tex.shaderEntity, pos.position, sz.size);
+        } else{
+            batch.setColor(tex.tint.r, tex.tint.g, tex.tint.b, tex.alpha);
+            if (sz != null) {
+                batch.draw(tex.texture, pos.position.x, pos.position.y, sz.width(), sz.height());
+            } else {
+                batch.draw(tex.texture, pos.position.x, pos.position.y);
+            }
+            batch.setColor(1f, 1f, 1f, 1f);
         }
-        batch.setColor(1f, 1f, 1f, 1f);
     }
 
 

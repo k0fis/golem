@@ -4,7 +4,8 @@
     "parallax_speedFactor": 0.3,
     "amplitude": 5
   },
-  "shader": "FOG_SEPIA_SLIDE",
+  "shader2": [,"FOG_SEPIA_SLIDE", "BRIGHTEN"],
+  "shaders": ["FOG_SEPIA_SLIDE", "BRIGHTEN"],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",

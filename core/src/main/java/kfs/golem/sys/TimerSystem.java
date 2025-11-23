@@ -1,6 +1,7 @@
 package kfs.golem.sys;
 
 import kfs.golem.GolemMain;
+import kfs.golem.comp.TimeComponent;
 import kfs.golem.comp.TimerComponent;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsSystem;
@@ -15,6 +16,10 @@ public class TimerSystem implements KfsSystem {
 
     @Override
     public void update(float delta) {
+        for (Entity e : golemMain.world.getEntitiesWith(TimeComponent.class)) {
+            TimeComponent tc = golemMain.world.getComponent(e, TimeComponent.class);
+            tc.time += delta;
+        }
         for (Entity e : golemMain.world.getEntitiesWith(TimerComponent.class)) {
             TimerComponent tc = golemMain.world.getComponent(e, TimerComponent.class);
 

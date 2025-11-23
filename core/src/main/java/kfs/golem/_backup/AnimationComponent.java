@@ -1,4 +1,4 @@
-package kfs.golem.comp;
+package kfs.golem._backup;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -13,4 +13,5 @@ public class AnimationComponent implements KfsComp {
         this.animation = animation;
         this.enabled = enabled;
     }
+
 }

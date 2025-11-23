@@ -13,10 +13,10 @@ public class C1S2_Bridge extends SceneLoader {
     @Override
     public void load() {
         super.load();
-        createTimeAfterSubtitlesForNextScene(5, new C1S3_DarkStreet1(engine));
+        createTimeAfterSubtitlesForNextScene(5, new C1S3_DarkStreet1(golemMain));
 
         createDialog(" > > ",
-            new Vector2(500, 500), () -> engine.loadScene(new C1S3_DarkStreet1(engine)),
+            new Vector2(500, 500), () -> golemMain.loadScene(new C1S3_DarkStreet1(golemMain)),
             BubbleStyle.BubbleTail.NONE);
 
     }

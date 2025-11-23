@@ -1,4 +1,4 @@
-package kfs.golem.comp;
+package kfs.golem._backup;
 
 import com.badlogic.gdx.math.Vector2;
 import kfs.golem.ecs.KfsComp;

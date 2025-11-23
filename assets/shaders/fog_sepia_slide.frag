@@ -4,7 +4,6 @@ precision mediump int;
 #endif
 
 uniform sampler2D u_texture;
-uniform vec2 u_resolution;
 uniform float u_time;
 
 varying vec2 v_uv;
@@ -62,6 +61,8 @@ void main() {
     // ----------------------------------------
     vec3 finalColor = mix(tinted, fogColor, fog);
 
-    //gl_FragColor = vec4(finalColor, color.a);
     gl_FragColor = vec4(finalColor, color.a) * v_color;
+
+    //gl_FragColor = texture2D(u_texture, v_uv);
 }
+
