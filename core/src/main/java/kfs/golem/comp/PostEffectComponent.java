@@ -40,7 +40,7 @@ public class PostEffectComponent implements KfsComp {
         }
 
         batch.begin();
-        batch.draw(src, 0, 0, buffer.getWidth(), buffer.getHeight(), 0f, 1f, 1f, 0f);
+        batch.draw(src, 0, 0, buffer.getWidth(), buffer.getHeight(), 0f, 0f, 1f, 1f);
         batch.end();
 
         batch.setShader(null);

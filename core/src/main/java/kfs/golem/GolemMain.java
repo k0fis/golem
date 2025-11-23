@@ -138,6 +138,7 @@ public class GolemMain extends ApplicationAdapter {
         world.addComponent(fogEntity, new TimeComponent());
         world.addComponent(fogEntity, new ShaderEffectComponent("shaders/lamp.vert", "shaders/lamp.frag",
             new Texture(Gdx.files.internal("textures/lamp.png")), lamp));
+
     }
 
     private Texture render(FrameBuffer fb, SceneEntityFilter filterScene, float deltaTime) {
@@ -176,7 +177,7 @@ public class GolemMain extends ApplicationAdapter {
         if (inx == 0) {
             batch.begin();
             batch.draw(texture1, 0f, 0f, fbCurrent.getWidth(), fbCurrent.getHeight(),
-                0, 1, 1,0);
+                0, 0, 1,1);
             batch.end();
         }
 

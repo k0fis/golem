@@ -49,6 +49,9 @@ public class CrossfadeSystem implements KfsSystem {
             cc.time += delta;
             float alpha = cc.time / cc.duration;
             cc.fade = Math.min(1f, Math.max(0f, alpha));   // clamp
+            if (cc.time > cc.duration) {
+                world.deleteEntity(e);
+            }
         }
     }
 

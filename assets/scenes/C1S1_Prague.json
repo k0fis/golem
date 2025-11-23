@@ -5,7 +5,7 @@
     "amplitude": 5
   },
   "shader2": [,"FOG_SEPIA_SLIDE", "BRIGHTEN"],
-  "shaders": ["FOG_SEPIA_SLIDE", "BRIGHTEN"],
+  "shaders": ["FOG_SEPIA_SLIDE"],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",

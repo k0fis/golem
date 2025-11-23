@@ -17,7 +17,7 @@ void main() {
     // 1) Slide factor: 0 → mlha mimo obraz / 1 → celá obrazovka
     // mlha „přijíždí“ z pravé strany
     // ----------------------------------------
-    float speed = 0.15;          // jak rychle jede (můžeš změnit)
+    float speed = 0.35;          // jak rychle jede (můžeš změnit)
     float slide = clamp(u_time * speed, 0.0, 1.0);
 
     // uv.x roste zleva doprava → chceme pravou stranu dřív
@@ -27,7 +27,7 @@ void main() {
     // ----------------------------------------
     // 2) Wave fog (původní jemná sin animace)
     // ----------------------------------------
-    float waveFog = 0.08 * sin(v_uv.y * 10.0 + u_time * 0.5);
+    float waveFog = 0.3 * sin(v_uv.y * 10.0 + u_time * 0.5);
 
     // ----------------------------------------
     // 3) Hustší mlha u spodku (Machinarium styl)
@@ -38,7 +38,7 @@ void main() {
     // 4) Spojení všeho dohromady
     // ----------------------------------------
     float fog = sideFog + waveFog + verticalFog;
-    fog = clamp(fog, 0.0, 0.6);
+    fog = clamp(fog, 0.01, 0.97);
 
     // ----------------------------------------
     // 5) Sepia tón
