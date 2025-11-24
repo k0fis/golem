@@ -169,7 +169,11 @@ public abstract class SceneLoader {
         Entity timer = golemMain.world.createEntity();
         golemMain.world.addComponent(timer, new TimerComponent(subtitleDelay,  ()-> {
             SubtitleMultilineComponent c = golemMain.world.getComponent(subtitleEntity, SubtitleMultilineComponent.class);
-            if (c != null) c.onComplete = () -> golemMain.loadScene(nextScene);
+            if (c != null) c.onComplete = () -> {
+                if (golemMain.filterSceneCurrent.filteringClass == getSLClass()) {
+                    golemMain.loadScene(nextScene, 1.5f);
+                }
+            };
         }));
         golemMain.world.addComponent(timer, new SceneIdComponent(getSLClass()));
         entities.add(timer);

@@ -51,6 +51,11 @@ public class KfsWorld implements KfsSystem {
         return type.cast(components.getOrDefault(type, Map.of()).get(e));
     }
 
+    public Optional<Entity> getEntityWith(Class<? extends KfsComp> c1) {
+        return new ArrayList<>(components.getOrDefault(c1, Map.of()).keySet())
+            .stream().findFirst();
+    }
+
     public List<Entity> getEntitiesWith(Class<? extends KfsComp> c1) {
         return new ArrayList<>(components.getOrDefault(c1, Map.of()).keySet());
     }

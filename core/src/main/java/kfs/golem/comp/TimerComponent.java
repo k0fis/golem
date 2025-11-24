@@ -8,6 +8,7 @@ public class TimerComponent implements KfsComp {
     public final Runnable action;
     public float time = 0f;
     public int count = 1;
+    public boolean deleteEntity = true;
 
     public TimerComponent(float limit, Runnable action) {
         this.limit = limit;

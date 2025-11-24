@@ -22,15 +22,16 @@ public class TimerSystem implements KfsSystem {
         }
         for (Entity e : golemMain.world.getEntitiesWith(TimerComponent.class)) {
             TimerComponent tc = golemMain.world.getComponent(e, TimerComponent.class);
+            if (tc != null) {
+                tc.time += delta;
 
-            tc.time += delta;
-
-            if (tc.time > tc.limit) {
-                tc.time = 0;
-                tc.count--;
-                tc.action.run();
-                if (tc.count <= 0) {
-                    golemMain.world.deleteEntity(e);
+                if (tc.time > tc.limit) {
+                    tc.time = 0;
+                    tc.count--;
+                    tc.action.run();
+                    if ((tc.count <= 0) && tc.deleteEntity) {
+                        golemMain.world.deleteEntity(e);
+                    }
                 }
             }
         }

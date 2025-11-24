@@ -1,6 +1,8 @@
 package kfs.golem.sys;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -42,7 +44,9 @@ public class RenderSystem implements KfsSystem {
                 renderTextures(batch, e);
             }
         }
+    }
 
+    public void renderText(SpriteBatch batch, SceneEntityFilter filter) {
         for (Entity subtitle : golemMain.world.getEntitiesWith(SubtitleComponent.class)) {
             if (filter.filter(subtitle)) {
                 renderSubtitles(batch, subtitle);
@@ -148,5 +152,4 @@ public class RenderSystem implements KfsSystem {
             pos.position.x + dlg.style.padding + ((dlg.style.tail == BubbleStyle.BubbleTail.LEFT)?dlg.style.tailSize:0),
             pos.position.y + dlg.size.y - ((dlg.style.tail == BubbleStyle.BubbleTail.DOWN)?0:dlg.style.tailSize));
     }
-
 }

@@ -16,7 +16,7 @@ public class C1S2_Bridge extends SceneLoader {
         createTimeAfterSubtitlesForNextScene(5, new C1S3_DarkStreet1(golemMain));
 
         createDialog(" > > ",
-            new Vector2(500, 500), () -> golemMain.loadScene(new C1S3_DarkStreet1(golemMain)),
+            new Vector2(500, 500), () -> golemMain.loadScene(new C1S3_DarkStreet1(golemMain), 1.5f),
             BubbleStyle.BubbleTail.NONE);
 
     }

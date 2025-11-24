@@ -4,7 +4,7 @@
     "parallax_speedFactor": 0.05,
     "amplitude": 15
   },
-  "shader": "FOG",
+  "shaders": ["FOG2"],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",
