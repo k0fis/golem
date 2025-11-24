@@ -1,7 +1,8 @@
 package kfs.golem.comp;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.graphics.Texture;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
@@ -27,5 +28,15 @@ public class ShaderLampComponent implements KfsComp, ShaderEffectComponent.PecPa
         pec.shader.setUniformf("u_speed", speed);
         pec.shader.setUniformf("u_noiseScale", noiseScale);
         pec.shader.setUniformf("u_colorTint", tint.r, tint.g, tint.b);
+    }
+
+    public static Entity register(KfsWorld world) {
+        Entity e = world.createEntity();
+        ShaderLampComponent lamp = new ShaderLampComponent(world);
+        world.addComponent(e, lamp);
+        world.addComponent(e, new TimeComponent());
+        world.addComponent(e, new ShaderEffectComponent("shaders/lamp.vert", "shaders/lamp.frag",
+            new Texture(Gdx.files.internal("textures/lamp.png")), lamp));
+        return e;
     }
 }

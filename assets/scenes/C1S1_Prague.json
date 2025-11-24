@@ -1,11 +1,11 @@
 {
   "background": {
     "file": "images/prague_mid.png",
-    "parallax_speedFactor": 0.3,
+    "parallax_speedFactor": 0,
     "amplitude": 5
   },
-  "shader2": [,"FOG_SEPIA_SLIDE", "BRIGHTEN"],
-  "shaders": ["FOG_SEPIA_SLIDE"],
+  "shaders2": ["FOG_SEPIA_SLIDE"],
+  "shaders": ["FOG_ROLLING"],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",
@@ -35,17 +35,6 @@
       "Jako by drželo dech."
     ]
   },
-  "textures": [
-    {
-      "id" : "c1s1-lamp-1",
-      "path":  "textures/lamp.png",
-      "posX" : 1000,
-      "posY": 400,
-      "width": 80,
-      "height": 100,
-      "shader": "LAMP"
-    }
-  ],
   "bubbles": [
     {
       "id": "narration1",

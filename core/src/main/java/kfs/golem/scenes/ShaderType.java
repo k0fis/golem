@@ -9,8 +9,8 @@ public enum ShaderType {
 
     FOG(ShaderFogComponent.class),
     FOG2(ShaderFog2Component.class),
+    FOG_ROLLING(ShaderFogRollingComponent.class),
     FOG_SEPIA_SLIDE(ShaderFogSepiaSlideComponent.class),
-    BRIGHTEN(ShaderBrightenComponent.class),
 
     LAMP(ShaderLampComponent.class);
 

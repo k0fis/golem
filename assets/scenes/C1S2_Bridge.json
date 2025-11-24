@@ -1,10 +1,10 @@
 {
   "background": {
     "file": "images/prague_bridge.png",
-    "parallax_speedFactor": 0.05,
+    "parallax_speedFactor": 0.0,
     "amplitude": 15
   },
-  "shaders": ["FOG2"],
+  "shaders": ["FOG"],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",

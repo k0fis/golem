@@ -4,7 +4,6 @@ precision mediump float;
 
 uniform sampler2D u_texture;      // background
 uniform float u_time;             // global time
-uniform float u_introProgress;    // 0 → 1 (fade-in progress)
 
 varying vec2 v_uv;
 varying vec4 v_color;
@@ -78,13 +77,11 @@ void main() {
     // Finální alfa mlhy s plynulým fade-in
     // ------------------------------------------------
     float fogAlpha = clamp(alpha1 + alpha2 + alpha3, 0.0, 0.4);
-    float fade = smoothstep(0.0, 1.0, u_introProgress-1.2);
-    fogAlpha *= fade;
 
     // ------------------------------------------------
     // Barva mlhy
     // ------------------------------------------------
-    vec3 fogColor = vec3(0.50, 0.42, 0.25);
+    vec3 fogColor = vec3(0.20, 0.32, 0.33);
 
     // ------------------------------------------------
     // Finální barva

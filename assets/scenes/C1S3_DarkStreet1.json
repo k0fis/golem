@@ -4,7 +4,19 @@
     "parallax_speedFactor": 0.1,
     "amplitude": 5
   },
-  "shader": "FOG2",
+  "shaders": ["FOG2"],
+  "textures": [
+    {
+      "id" : "c1s1-lamp-1",
+      "path":  "textures/lamp.png",
+      "posX" : 380,
+      "posY":  510,
+      "width": 80,
+      "height": 130,
+      "shader": "LAMP"
+    }
+  ],
+
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#ffffffff",

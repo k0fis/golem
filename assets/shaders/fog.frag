@@ -4,7 +4,6 @@ precision mediump float;
 
 uniform sampler2D u_texture;      // background
 uniform float u_time;             // global time
-uniform float u_introProgress;    // 0 → 1 (fade-in progress)
 
 varying vec2 v_uv;
 varying vec4 v_color;
@@ -44,14 +43,14 @@ void main() {
     // ------------------------------------------------
     // Continuous drift mlhy doleva
     // ------------------------------------------------
-    float drift = -u_time * 0.06;
+    float drift = u_time * 0.06;
 
     // ------------------------------------------------
     // Parallax mlha (3 vrstvy)
     // ------------------------------------------------
 
     // VRSTVA 1 – nejpomalejší
-    vec2 uv1 = v_uv * 2.0;
+    vec2 uv1 = v_uv * 1.2;
     uv1.x += drift;
     uv1.y += sin(u_time * 0.25) * 0.02;
 
@@ -59,17 +58,17 @@ void main() {
     float alpha1 = fog1 * 0.18;
 
     // VRSTVA 2 – střední rychlost
-    vec2 uv2 = v_uv * 4.0;
-    uv2.x += drift * 1.5;
+    vec2 uv2 = v_uv * 2.5;
+    uv2.x += drift * 1.3;
     uv2.y += sin(u_time * 0.33) * 0.03;
 
     float fog2 = smoothstep(0.40, 0.80, noise(uv2));
     float alpha2 = fog2 * 0.25;
 
     // VRSTVA 3 – nejrychlejší
-    vec2 uv3 = v_uv * 8.0;
-    uv3.x += drift * 2.0;
-    uv3.y += sin(u_time * 0.41) * 0.035;
+    vec2 uv3 = v_uv * 4.0;
+    uv3.x += drift * 1.7;
+    uv3.y += sin(u_time * 0.41) * 0.35;
 
     float fog3 = smoothstep(0.45, 0.85, noise(uv3));
     float alpha3 = fog3 * 0.35;
@@ -77,14 +76,12 @@ void main() {
     // ------------------------------------------------
     // Finální alfa mlhy s plynulým fade-in
     // ------------------------------------------------
-    float fogAlpha = clamp(alpha1 + alpha2 + alpha3, 0.0, 0.8);
-    float fade = smoothstep(0.0, 1.0, u_introProgress-1.2);
-    fogAlpha *= fade;
+    float fogAlpha = clamp(alpha1 + alpha2 + alpha3, 0.01, 0.89);
 
     // ------------------------------------------------
     // Barva mlhy
     // ------------------------------------------------
-    vec3 fogColor = vec3(0.90, 0.78, 0.55);
+    vec3 fogColor = vec3(0.90, 0.78, 0.65);
 
     // ------------------------------------------------
     // Finální barva

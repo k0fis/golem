@@ -2,7 +2,6 @@ package kfs.golem.scenes;
 
 import com.badlogic.gdx.math.Vector2;
 import kfs.golem.GolemMain;
-import kfs.golem.ecs.Entity;
 import kfs.golem.utils.BubbleStyle;
 
 public class C1S1_Prague extends SceneLoader {
@@ -16,15 +15,10 @@ public class C1S1_Prague extends SceneLoader {
         super.load();
         createTimeAfterSubtitlesForNextScene(5, new C1S2_Bridge(golemMain));
 
-        createDialog(" > > ",
-            new Vector2(1070, 720), () -> golemMain.loadScene(new C1S2_Bridge(golemMain), 1.5f),
-            BubbleStyle.BubbleTail.NONE);
+        createDialog(" > > ", new Vector2(1070, 720), () ->
+                golemMain.loadScene(new C1S2_Bridge(golemMain),
+                    1.5f), BubbleStyle.BubbleTail.NONE);
 
-
-        Entity lamp = textures.get("c1s1-lamp-1");
-        if (lamp == null) {
-            throw new RuntimeException("lamp is null");
-        }
 
     }
 

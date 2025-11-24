@@ -16,7 +16,14 @@ public class ShaderFog2Component implements KfsComp, PostEffectComponent.PecPara
     public void setUniforms(Entity entity, PostEffectComponent pec, float delta) {
         TimeComponent tc = world.getComponent(entity, TimeComponent.class);
         pec.shader.setUniformf("u_time", tc.time);
-        pec.shader.setUniformf("u_resolution", pec.buffer.getWidth(), pec.buffer.getHeight());
-        pec.shader.setUniformf("u_introProgress", tc.time / 3f);
+    }
+
+    public static Entity register(KfsWorld world) {
+        Entity fogEntity = world.createEntity();
+        ShaderFog2Component sf2c = new ShaderFog2Component(world);
+        world.addComponent(fogEntity, sf2c);
+        world.addComponent(fogEntity, new TimeComponent());
+        world.addComponent(fogEntity, new PostEffectComponent("shaders/fog.vert", "shaders/fog2.frag", sf2c));
+        return fogEntity;
     }
 }

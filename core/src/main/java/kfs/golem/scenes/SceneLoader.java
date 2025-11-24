@@ -10,6 +10,7 @@ import kfs.golem.comp.*;
 import kfs.golem.ecs.Entity;
 import kfs.golem.scenes.data.*;
 import kfs.golem.utils.BubbleStyle;
+import kfs.golem.utils.InvalidShaderName;
 
 import java.util.*;
 
@@ -114,11 +115,9 @@ public abstract class SceneLoader {
         if (textureData.shader != null) {
             ShaderType type = ShaderType.fromShaderName(textureData.shader);
             if (type != ShaderType.NONE) {
-                for (Entity entity : golemMain.world.getEntitiesWith(type.shaderComponent)) {
-                    tc.shader = golemMain.world.getComponent(entity, ShaderEffectComponent.class);
-                    tc.shaderEntity = entity;
-                    break;
-                }
+                Entity entity  = golemMain.world.getEntityWith(type.shaderComponent).orElseThrow(()->new InvalidShaderName(textureData.shader));
+                tc.shader = golemMain.world.getComponent(entity, ShaderEffectComponent.class);
+                tc.shaderEntity = entity;
             }
         }
     }

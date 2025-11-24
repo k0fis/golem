@@ -12,7 +12,14 @@ public class TextureComponent implements KfsComp {
     public Color tint = new Color(1, 1, 1, 1);
     public boolean windowSize = false;
     public ShaderEffectComponent shader = null;
+    public ShaderEffectComponent shaderSwap = null;
     public Entity shaderEntity = null;
 
     public TextureComponent(Texture texture, boolean fullSize) { this.texture = texture; this.windowSize = fullSize; }
+
+    public void swapShaders() {
+        ShaderEffectComponent s = shader;
+        shader = shaderSwap;
+        shaderSwap = s;
+    }
 }

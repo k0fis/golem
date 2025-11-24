@@ -20,6 +20,7 @@ import kfs.golem.scenes.ShaderType;
 import kfs.golem.sys.*;
 import kfs.golem.utils.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 public class GolemMain extends ApplicationAdapter {
@@ -50,8 +51,21 @@ public class GolemMain extends ApplicationAdapter {
         world.addSys(new RenderSystem(this, font36, font24));
         world.addSys(new SubtitleMultilineSystem(this.world));
         world.addSys(new SubtitleSystem(this));
+        ShaderProgram.pedantic = false;
+        for (ShaderType st : ShaderType.values()) {
+            try {
+                if (st.shaderComponent != null)
+                st.shaderComponent.getDeclaredMethod("register", KfsWorld.class).invoke(null, world);
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            } catch (InvocationTargetException e) {
+                throw new RuntimeException(e);
+            } catch (NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         world.init();
-        initShaders();
 
         loadScene(new C1S1_Prague(this), 1f);
     }
@@ -97,38 +111,7 @@ public class GolemMain extends ApplicationAdapter {
 
 
     private void initShaders() {
-        ShaderProgram.pedantic = false;
 
-        Entity fogEntity = world.createEntity();
-        ShaderFogComponent sfc = new ShaderFogComponent(world);
-        world.addComponent(fogEntity, sfc);
-        world.addComponent(fogEntity, new TimeComponent());
-        world.addComponent(fogEntity, new PostEffectComponent("shaders/fog.vert", "shaders/fog.frag", sfc));
-
-        fogEntity = world.createEntity();
-        ShaderFog2Component sf2c = new ShaderFog2Component(world);
-        world.addComponent(fogEntity, sfc);
-        world.addComponent(fogEntity, new TimeComponent());
-        world.addComponent(fogEntity, new PostEffectComponent("shaders/fog.vert", "shaders/fog2.frag", sf2c));
-
-        fogEntity = world.createEntity();
-        ShaderFogSepiaSlideComponent sepia = new ShaderFogSepiaSlideComponent(world);
-        world.addComponent(fogEntity, sepia);
-        world.addComponent(fogEntity, new TimeComponent());
-        world.addComponent(fogEntity, new PostEffectComponent("shaders/fog_sepia_slide.vert", "shaders/fog_sepia_slide.frag", sepia));
-
-        fogEntity = world.createEntity();
-        ShaderBrightenComponent brighten = new ShaderBrightenComponent(world);
-        world.addComponent(fogEntity, brighten);
-        world.addComponent(fogEntity, new TimeComponent());
-        world.addComponent(fogEntity, new PostEffectComponent("shaders/brighten.vert", "shaders/brighten.frag", brighten));
-
-        fogEntity = world.createEntity();
-        ShaderLampComponent lamp = new ShaderLampComponent(world);
-        world.addComponent(fogEntity, lamp);
-        world.addComponent(fogEntity, new TimeComponent());
-        world.addComponent(fogEntity, new ShaderEffectComponent("shaders/lamp.vert", "shaders/lamp.frag",
-            new Texture(Gdx.files.internal("textures/lamp.png")), lamp));
     }
 
     private Texture render(FrameBuffer fb, SceneEntityFilter filterScene, float deltaTime) {
@@ -192,6 +175,14 @@ public class GolemMain extends ApplicationAdapter {
                     sceneOld = null;
                 }
             }));
+
+        // reset time u efektu
+        for (Entity ef: world.getEntitiesWith(PostEffectComponent.class)) {
+            TimeComponent tc = world.getComponent(ef, TimeComponent.class);
+            if (tc != null) {
+                tc.time = 0f;
+            }
+        }
     }
 
     public void setSceneShaders(Class<? extends SceneLoader> sceneLoaderCls, String []shaderNames) {
@@ -199,11 +190,21 @@ public class GolemMain extends ApplicationAdapter {
         if (shaderNames != null) {
             for (String name : shaderNames) {
                 ShaderType type = ShaderType.fromShaderName(name);
-                if (type != null) {
+                if (type != ShaderType.NONE) {
                     sceneShaderClasses.add(type.shaderComponent);
                 }
             }
         }
         sceneShaders.put(sceneLoaderCls, sceneShaderClasses);
+    }
+
+    public void addSceneShader(Class<? extends SceneLoader> sceneLoaderCls, ShaderType shaderType) {
+        List <Class<? extends KfsComp>> sceneShaderClasses = sceneShaders.computeIfAbsent(sceneLoaderCls, k->new ArrayList<>());
+        sceneShaderClasses.add(shaderType.shaderComponent);
+    }
+
+    public void removeSceneShader(Class<? extends SceneLoader> sceneLoaderCls, ShaderType shaderType) {
+        List <Class<? extends KfsComp>> sceneShaderClasses = sceneShaders.computeIfAbsent(sceneLoaderCls, k->new ArrayList<>());
+        sceneShaderClasses.remove(shaderType.shaderComponent);
     }
 }

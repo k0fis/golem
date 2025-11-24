@@ -34,7 +34,10 @@ public class PostEffectComponent implements KfsComp {
 
     public Texture apply(Batch batch, Texture src, Entity entity, float delta) {
         buffer.begin();
+        batch.setColor(1,1,1,1);
+        batch.enableBlending();
         batch.setShader(shader);
+
         if (params != null) {
             params.setUniforms(entity, this, delta);
         }
