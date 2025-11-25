@@ -24,10 +24,8 @@ public class C1S3_DarkStreet extends  SceneLoader {
 
         createTimeAfterSubtitlesForNextScene(5, new C1S4_DarkStreet(golemMain));
 
-        Entity lamp = java.util.Objects.requireNonNull(textures.get("c1s3-lamp-1"), "lamp is null");
-        TextureComponent tc = golemMain.world.getComponent(lamp, TextureComponent.class);
-        golemMain.world.addComponent(lamp, new InteractiveComponent(tc::swapShaders,
-            tc.texture.getWidth(), tc.texture.getHeight()));
+        setDefaultActionForLamp("c1s3-lamp-1");
+        setDefaultActionForLamp("c1s3-lamp-2");
     }
 
     @Override

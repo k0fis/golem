@@ -1,7 +1,6 @@
 package kfs.golem.comp;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -28,10 +27,6 @@ public class ShaderEffectComponent implements KfsComp {
     }
 
     public void apply(Batch batch, Texture texture, Entity entity, Vector2 position, Vector2 size) {
-        batch.setColor(1,1,1,1);
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-
         batch.setShader(shader);
         params.setUniforms(entity, this);
         batch.draw(texture, position.x, position.y, size.x, size.y);

@@ -11,6 +11,7 @@ import kfs.golem.ecs.Entity;
 import kfs.golem.scenes.data.*;
 import kfs.golem.utils.BubbleStyle;
 import kfs.golem.utils.InvalidShaderName;
+import kfs.golem.utils.SceneLoaderException;
 
 import java.util.*;
 
@@ -38,8 +39,7 @@ public abstract class SceneLoader {
             try {
                 return json.fromJson(SceneData.class, Gdx.files.internal(path));
             } catch (Exception e) {
-                Gdx.app.error("SceneLoader", "Failed to load scene " + path, e);
-                throw new RuntimeException(e);
+                throw new SceneLoaderException(path, e);
             }
         }
         return null;
@@ -164,6 +164,15 @@ public abstract class SceneLoader {
         return entity;
     }
 
+    protected void createNextLoaderAction(Entity entity, SceneLoader nextScene) {
+        SizeComponent s = golemMain.world.getComponent(entity, SizeComponent.class);
+        golemMain.world.addComponent(entity, new InteractiveComponent( ()->{
+            if (golemMain.filterSceneCurrent.filteringClass == getSLClass()) {
+                golemMain.loadScene(nextScene, 1.5f);
+            }
+        }, s.width(), s.height()));
+    }
+
     protected void createTimeAfterSubtitlesForNextScene(float subtitleDelay, SceneLoader nextScene) {
         Entity timer = golemMain.world.createEntity();
         golemMain.world.addComponent(timer, new TimerComponent(subtitleDelay,  ()-> {
@@ -177,24 +186,15 @@ public abstract class SceneLoader {
         golemMain.world.addComponent(timer, new SceneIdComponent(getSLClass()));
         entities.add(timer);
     }
-/*
-    public Entity createLamp(String texturePath, float x, float y) {
-        Entity entity = world.createEntity();
-        Array<TextureRegion> frames = new Array<>();
-        frames.add(new TextureRegion(new Texture("golem_idle_1.png")));
-        frames.add(new TextureRegion(new Texture("golem_idle_2.png")));
-        frames.add(new TextureRegion(new Texture("golem_idle_3.png")));
 
-        AnimationComponent ac = new AnimationComponent(new Animation<>(0.25f, frames, Animation.PlayMode.LOOP), false);
-        world.addComponent(entity, new TextureComponent(frames.first(), false));
-        world.addComponent(entity, ac);
-        world.addComponent(entity, new PositionComponent(x, y));
-        world.addComponent(entity, new LightPulseComponent());
-        world.addComponent(entity, new InteractiveComponent(() -> {
-            ac.enabled = !ac.enabled;   // toggle
-        }));
-        return entity;
+    protected void setDefaultActionForLamp(String lampName) {
+        Entity lamp = java.util.Objects.requireNonNull(textures.get(lampName), "lamp "+lampName+" is null");
+        TextureComponent tc = golemMain.world.getComponent(lamp, TextureComponent.class);
+        golemMain.world.addComponent(lamp, new InteractiveComponent(tc::swapShaders,
+            tc.texture.getWidth(), tc.texture.getHeight()));
     }
+
+/*
 
     public Entity createGolem(float x, float y) {
         Entity entity = world.createEntity();

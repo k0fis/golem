@@ -1,0 +1,10 @@
+{
+  "background": {
+    "file": "images/prague_mid.png",
+    "parallax_speedFactor": 0,
+    "amplitude": 5
+  },
+  "shaders": [
+    "FOG_ROLLING"
+  ]
+}

@@ -15,6 +15,15 @@
       "shader": "LAMP"
     },
     {
+      "id" : "c1s4-lamp-2",
+      "path":  "textures/lamp.png",
+      "posX" : 748,
+      "posY":  510,
+      "width": 80,
+      "height": 130,
+      "shader": "LAMP"
+    },
+    {
         "id" : "c1s4-doors",
         "path":  "textures/dark_street_door.png",
         "posX" : 756,

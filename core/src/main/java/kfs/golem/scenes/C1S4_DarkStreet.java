@@ -1,8 +1,6 @@
 package kfs.golem.scenes;
 
 import kfs.golem.GolemMain;
-import kfs.golem.comp.InteractiveComponent;
-import kfs.golem.comp.TextureComponent;
 import kfs.golem.ecs.Entity;
 
 public class C1S4_DarkStreet extends  SceneLoader {
@@ -16,13 +14,11 @@ public class C1S4_DarkStreet extends  SceneLoader {
     public void load() {
         super.load();
 
-        Entity lamp = java.util.Objects.requireNonNull(textures.get("c1s4-lamp-1"), "lamp is null");
         Entity doorOutline = java.util.Objects.requireNonNull(textures.get("c1s4-doors"), "doors is null");
+        createNextLoaderAction(doorOutline, new C1S5_AlchemystWorkShop(golemMain));
 
-
-        TextureComponent tc = golemMain.world.getComponent(lamp, TextureComponent.class);
-        golemMain.world.addComponent(lamp, new InteractiveComponent(tc::swapShaders,
-            tc.texture.getWidth(), tc.texture.getHeight()));
+        setDefaultActionForLamp("c1s4-lamp-1");
+        setDefaultActionForLamp("c1s4-lamp-2");
     }
 
     @Override

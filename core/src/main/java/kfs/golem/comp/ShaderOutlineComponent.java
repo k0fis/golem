@@ -1,7 +1,5 @@
 package kfs.golem.comp;
 
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.math.Vector3;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
@@ -17,10 +15,13 @@ public class ShaderOutlineComponent implements KfsComp, ShaderEffectComponent.Pe
     @Override
     public void setUniforms(Entity entity, ShaderEffectComponent pec) {
         TimeComponent tc = world.getComponent(entity, TimeComponent.class);
-        pec.shader.setUniformf("u_speed", 0.25f);               // pomaličké obíhání
-        pec.shader.setUniformf("u_width", 0.015f);              // úzký pulz
-        pec.shader.setUniformf("u_glowColor", 0.2f, 0.6f, 1f);  // jemná azurová
         pec.shader.setUniformf("u_time", tc.time);
+        pec.shader.setUniformf("u_thickness", 0.05f);   // pomalé otáčení
+        pec.shader.setUniformf("u_dotSize", 0.05f);   // šířka pulzu
+        pec.shader.setUniformf("u_dotColor", 0.2f, 0.6f, 1.0f); // azurová nádech
+
+
+        //pec.shader.setUniformf("u_colorTint", 0.2f, 0.6f, 1f);  // jemná azurová
     }
 
     public static Entity register(KfsWorld world) {

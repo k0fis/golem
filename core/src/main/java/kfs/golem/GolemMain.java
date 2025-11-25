@@ -14,9 +14,7 @@ import kfs.golem.comp.*;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
-import kfs.golem.scenes.C1S1_Prague;
-import kfs.golem.scenes.SceneLoader;
-import kfs.golem.scenes.ShaderType;
+import kfs.golem.scenes.*;
 import kfs.golem.sys.*;
 import kfs.golem.utils.*;
 
@@ -67,7 +65,8 @@ public class GolemMain extends ApplicationAdapter {
 
         world.init();
 
-        loadScene(new C1S1_Prague(this), 1f);
+        //loadScene(new C1S1_Prague(this), 1f);
+        loadScene(new C1S4_DarkStreet(this), 1f);
     }
 
     @Override
