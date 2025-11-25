@@ -1,8 +1,6 @@
 package kfs.golem.comp;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
@@ -35,8 +33,7 @@ public class ShaderLampComponent implements KfsComp, ShaderEffectComponent.PecPa
         ShaderLampComponent lamp = new ShaderLampComponent(world);
         world.addComponent(e, lamp);
         world.addComponent(e, new TimeComponent());
-        world.addComponent(e, new ShaderEffectComponent("shaders/lamp.vert", "shaders/lamp.frag",
-            new Texture(Gdx.files.internal("textures/lamp.png")), lamp));
+        world.addComponent(e, new ShaderEffectComponent("shaders/lamp.vert", "shaders/lamp.frag", lamp));
         return e;
     }
 }

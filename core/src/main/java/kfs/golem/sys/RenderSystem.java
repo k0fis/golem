@@ -88,7 +88,7 @@ public class RenderSystem implements KfsSystem {
         PositionComponent pos = golemMain.world.getComponent(e, PositionComponent.class);
         SizeComponent sz = golemMain.world.getComponent(e, SizeComponent.class);
         if ( tex.shader != null) {
-            tex.shader.apply(batch, tex.shaderEntity, pos.position, sz.size);
+            tex.shader.apply(batch, tex.texture, tex.shaderEntity, pos.position, sz.size);
         } else{
             batch.setColor(tex.tint.r, tex.tint.g, tex.tint.b, tex.alpha);
             if (sz != null) {

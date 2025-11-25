@@ -1,0 +1,27 @@
+{
+  "background": {
+    "file": "images/dark_street.png",
+    "parallax_speedFactor": 0,
+    "amplitude": 5
+  },
+  "textures": [
+    {
+      "id" : "c1s4-lamp-1",
+      "path":  "textures/lamp.png",
+      "posX" : 378,
+      "posY":  510,
+      "width": 80,
+      "height": 130,
+      "shader": "LAMP"
+    },
+    {
+        "id" : "c1s4-doors",
+        "path":  "textures/dark_street_door.png",
+        "posX" : 756,
+        "posY":  78,
+        "width": 140,
+        "height": 406,
+        "shader": "OUTLINE"
+    }
+  ]
+}

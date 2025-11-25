@@ -1,6 +1,7 @@
 package kfs.golem.comp;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -12,13 +13,10 @@ import kfs.golem.utils.ShaderEffectCompileException;
 public class ShaderEffectComponent implements KfsComp {
 
     public final ShaderProgram shader;
-    public final Texture texture;
     public final PecParams params;
 
-
-    public ShaderEffectComponent(String vert, String frag, Texture texture, PecParams params) {
+    public ShaderEffectComponent(String vert, String frag, PecParams params) {
         this.params = params;
-        this.texture = texture;
         shader = new ShaderProgram(Gdx.files.internal(vert), Gdx.files.internal(frag));
         if (!shader.isCompiled()) {
             throw new ShaderEffectCompileException(vert, frag, shader.getLog());
@@ -27,14 +25,15 @@ public class ShaderEffectComponent implements KfsComp {
 
     public void dispose() {
         shader.dispose();
-        texture.dispose();
     }
 
-    public void apply(Batch batch, Entity entity, Vector2 position, Vector2 size) {
+    public void apply(Batch batch, Texture texture, Entity entity, Vector2 position, Vector2 size) {
+        batch.setColor(1,1,1,1);
+        batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         batch.setShader(shader);
-        if (params != null) {
-            params.setUniforms(entity, this);
-        }
+        params.setUniforms(entity, this);
         batch.draw(texture, position.x, position.y, size.x, size.y);
         batch.setShader(null);
     }

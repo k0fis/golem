@@ -7,9 +7,9 @@
   "shaders": ["FOG2"],
   "textures": [
     {
-      "id" : "c1s1-lamp-1",
+      "id" : "c1s3-lamp-1",
       "path":  "textures/lamp.png",
-      "posX" : 380,
+      "posX" : 378,
       "posY":  510,
       "width": 80,
       "height": 130,

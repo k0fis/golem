@@ -1,6 +1,7 @@
 package kfs.golem.comp;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
@@ -34,15 +35,18 @@ public class PostEffectComponent implements KfsComp {
 
     public Texture apply(Batch batch, Texture src, Entity entity, float delta) {
         buffer.begin();
+        batch.begin();
         batch.setColor(1,1,1,1);
         batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         batch.setShader(shader);
 
         if (params != null) {
             params.setUniforms(entity, this, delta);
         }
 
-        batch.begin();
+
         batch.draw(src, 0, 0, buffer.getWidth(), buffer.getHeight(), 0f, 0f, 1f, 1f);
         batch.end();
 

@@ -12,7 +12,10 @@ public enum ShaderType {
     FOG_ROLLING(ShaderFogRollingComponent.class),
     FOG_SEPIA_SLIDE(ShaderFogSepiaSlideComponent.class),
 
-    LAMP(ShaderLampComponent.class);
+    LAMP(ShaderLampComponent.class),
+    OUTLINE(ShaderOutlineComponent.class),
+
+    ;
 
     public final Class<?extends KfsComp> shaderComponent;
 
