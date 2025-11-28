@@ -5,17 +5,28 @@
     "z": 1
   },
   "shaders": [{
-    "name": "FOG_AURA",
-    "z": 100,
+    "name": "FOG_STARS",
+    "z": 501,
     "params": {
-      "intensity": 0.69,
-      "ceiling": 0.8,
-      "colorR": 0.3,
-      "colorG": 0.4,
-      "colorB": 1.0,
-      "speed": 1.0,
-      "detail": 3.0,
-      "falloff": 1.4
+      "band": 0.15,
+      "intensity": 0.640,
+      "density": 0.82,
+      "speed": 0.931,
+      "colorR": 0.5,
+      "colorG": 0.7,
+      "colorB": 0.7
+    }},{
+    "name": "FOG_ROUND_AURA",
+    "z": 500,
+    "params": {
+      "band": 0.12,
+      "intensity": 0.45,
+      "detail": 3.5,
+      "speed": 0.31,
+      "falloff": 0.9,
+      "colorR": 0.2,
+      "colorG": 0.3,
+      "colorB": 0.7
     }
   }],
   "textures": [

@@ -1,7 +1,5 @@
 package kfs.golem.comp;
 
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
@@ -9,11 +7,11 @@ import kfs.golem.ecs.KfsWorld;
 
 import java.util.Map;
 
-public class ShaderFogAuraComponent implements KfsComp, PostEffectComponent.PecParams {
+public class ShaderFogRoundAuraComponent implements KfsComp, PostEffectComponent.PecParams {
 
     private final KfsWorld world;
 
-    public ShaderFogAuraComponent(KfsWorld world) {
+    public ShaderFogRoundAuraComponent(KfsWorld world) {
         this.world = world;
     }
 
@@ -21,6 +19,7 @@ public class ShaderFogAuraComponent implements KfsComp, PostEffectComponent.PecP
     public void setUniforms(Entity entity, Map<String, Float> params, PostEffectComponent pec, Vector2 wSize) {
         TimeComponent tc = world.getComponent(entity, TimeComponent.class);
         pec.shader.setUniformf("u_time", tc.time);
+        pec.shader.setUniformf("u_band", params.getOrDefault("band", 0.12f));
         pec.shader.setUniformf("u_intensity", params.getOrDefault("intensity", 0.2f));
         pec.shader.setUniformf("u_detail", params.getOrDefault("detail",2.0f));
         pec.shader.setUniformf("u_speed", params.getOrDefault("speed",1.2f));
@@ -33,10 +32,10 @@ public class ShaderFogAuraComponent implements KfsComp, PostEffectComponent.PecP
 
     public static Entity register(KfsWorld world) {
         Entity e = world.createEntity();
-        ShaderFogAuraComponent fog = new ShaderFogAuraComponent(world);
+        ShaderFogRoundAuraComponent fog = new ShaderFogRoundAuraComponent(world);
         world.addComponent(e, fog);
         world.addComponent(e, new TimeComponent());
-        world.addComponent(e, new PostEffectComponent("shaders/fog.vert", "shaders/fog_aura.frag", fog));
+        world.addComponent(e, new PostEffectComponent("shaders/fog.vert", "shaders/fog_round_aura.frag", fog));
         return e;
     }
 }

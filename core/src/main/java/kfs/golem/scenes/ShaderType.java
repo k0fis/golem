@@ -12,6 +12,8 @@ public enum ShaderType {
     FOG_ROLLING(ShaderFogRollingComponent.class),
     FOG_SEPIA_SLIDE(ShaderFogSepiaSlideComponent.class),
     FOG_AURA(ShaderFogAuraComponent.class),
+    FOG_ROUND_AURA(ShaderFogRoundAuraComponent.class),
+    FOG_STARS(ShaderFogStarsComponent.class),
 
     LAMP(ShaderLampComponent.class),
     OUTLINE(ShaderOutlineComponent.class),
