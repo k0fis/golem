@@ -21,7 +21,7 @@ public class BubbleTextureGenerator {
 
         layout.setText(font, text, Color.WHITE, style.maxWidth, Align.left, true);
 
-        size.x = layout.width + style.padding * 2;
+        size.x = layout.width + style.padding * 2 + style.radius;
         size.y = layout.height + style.padding * 2;
 
         Pixmap pix = new Pixmap(

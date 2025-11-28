@@ -1,8 +1,11 @@
 package kfs.golem.comp;
 
+import com.badlogic.gdx.math.Vector2;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
+
+import java.util.Map;
 
 public class ShaderFogRollingComponent implements KfsComp, PostEffectComponent.PecParams {
 
@@ -13,15 +16,24 @@ public class ShaderFogRollingComponent implements KfsComp, PostEffectComponent.P
     }
 
     @Override
-    public void setUniforms(Entity entity, PostEffectComponent pec, float delta) {
+    public void setUniforms(Entity entity, Map<String, Float> params, PostEffectComponent pec, Vector2 wSize) {
         TimeComponent tc = world.getComponent(entity, TimeComponent.class);
         pec.shader.setUniformf("u_time", tc.time);
-        pec.shader.setUniformf("u_intensity", 0.7f);
-        pec.shader.setUniformf("u_scroll", 7f, 0.1f);
-        pec.shader.setUniformf("u_fogColor", 0.5f, 0.5f, 0.5f);
-        pec.shader.setUniformf("u_noiseScale", 1.2f);
-        pec.shader.setUniformf("u_heightFalloff", 1.2f);
-        pec.shader.setUniformf("u_bandWidth", .82f);
+        pec.shader.setUniformf("u_intensity",
+            params.getOrDefault("intensity", 0.7f));
+        pec.shader.setUniformf("u_scroll",
+            params.getOrDefault("scrollX", 7f),
+            params.getOrDefault("scrollY", 0.1f));
+        pec.shader.setUniformf("u_fogColor",
+            params.getOrDefault("fogColorR", 0.5f),
+            params.getOrDefault("fogColorG", 0.5f),
+            params.getOrDefault("fogColorB", 0.5f));
+        pec.shader.setUniformf("u_noiseScale",
+            params.getOrDefault("noiseScale",1.2f));
+        pec.shader.setUniformf("u_heightFalloff",
+            params.getOrDefault("heightFalloff", 1.2f));
+        pec.shader.setUniformf("u_bandWidth",
+            params.getOrDefault("bandWidth", .82f));
 
 
     }

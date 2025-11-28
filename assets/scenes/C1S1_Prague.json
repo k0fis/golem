@@ -2,10 +2,10 @@
   "background": {
     "file": "images/prague_mid.png",
     "parallax_speedFactor": 0,
-    "amplitude": 5
+    "amplitude": 5,
+    "z": 1
   },
-  "shaders2": ["FOG_SEPIA_SLIDE"],
-  "shaders": ["FOG_ROLLING"],
+  "shaders": [ { "name": "FOG_ROLLING", "z": 100} ],
   "subtitle": {
     "initDelay": 0.75,
     "textColor": "#000000ff",

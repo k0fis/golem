@@ -7,11 +7,12 @@ import kfs.golem.utils.BubbleStyle;
 
 public class DialogComponent implements KfsComp {
     public final String text;
+    public final BubbleStyle style;
     public Color textColor = Color.BLACK;
-    public BubbleStyle style = new BubbleStyle();
     public Vector2 size = new Vector2();
 
-    public DialogComponent(String text) {
+    public DialogComponent(String text, BubbleStyle style) {
         this.text = text;
+        this.style = style;
     }
 }

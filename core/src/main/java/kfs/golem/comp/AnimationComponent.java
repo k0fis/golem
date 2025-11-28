@@ -1,4 +1,4 @@
-package kfs.golem._backup;
+package kfs.golem.comp;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;

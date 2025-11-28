@@ -22,9 +22,6 @@ public class InteractiveSystem implements KfsSystem {
             ClickComponent cc = golemMain.world.getComponent(click, ClickComponent.class);
 
             for (Entity interactiveEntity : golemMain.world.getEntitiesWith(InteractiveComponent.class, PositionComponent.class)) {
-                if (!golemMain.filterSceneCurrent.filter(interactiveEntity)) {
-                    continue;
-                }
                 PositionComponent pc = golemMain.world.getComponent(interactiveEntity, PositionComponent.class);
                 InteractiveComponent ic = golemMain.world.getComponent(interactiveEntity, InteractiveComponent.class);
                 if (ic.isEnabled) {

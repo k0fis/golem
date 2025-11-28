@@ -9,6 +9,7 @@ import kfs.golem.GolemMain;
 import kfs.golem.comp.*;
 import kfs.golem.ecs.Entity;
 import kfs.golem.scenes.data.*;
+import kfs.golem.sys.RenderSystem;
 import kfs.golem.utils.BubbleStyle;
 import kfs.golem.utils.InvalidShaderName;
 import kfs.golem.utils.SceneLoaderException;
@@ -17,14 +18,15 @@ import java.util.*;
 
 public abstract class SceneLoader {
 
+    private static final int SUBTITLE_Z_ORDER = 880;
+    private static final int DIALOG_Z_ORDER = 880;
+
     protected final GolemMain golemMain;
     protected final List<Entity> entities = new ArrayList<>();
     protected final SceneData _sceneData;
 
-    protected Entity bgEntity;
     protected Entity subtitleEntity;
     protected Map<String, Entity> textures;
-
 
     protected SceneLoader(GolemMain engine, String path) {
         this.golemMain = engine;
@@ -57,78 +59,101 @@ public abstract class SceneLoader {
     public void load() {
         if (_sceneData == null) return;
         createBackground(_sceneData.background);
-        createSubtitle(_sceneData.subtitle);
-        golemMain.setSceneShaders(getSLClass(), _sceneData.shaders);
+        if (_sceneData.shaders != null)
+            for (FullScreenShaderData sd : _sceneData.shaders)
+                createFSShaders(sd);
         if (_sceneData.textures != null) {
             for (TextureData texture : _sceneData.textures) {
                 createTexture(texture);
             }
         }
-        golemMain.resize();
+        createSubtitle(_sceneData.subtitle);
     }
 
     private void createBackground(BackgroundData bg){
         if (bg == null) return;
-        bgEntity = golemMain.world.createEntity();
+        Entity bgEntity = golemMain.world.createEntity();
         entities.add(bgEntity);
-        golemMain.world.addComponent(bgEntity, new TextureComponent(new Texture(Gdx.files.internal(bg.file)), true));
+        golemMain.world.addComponent(bgEntity, new TextureComponent(new Texture(Gdx.files.internal(bg.file))));
         golemMain.world.addComponent(bgEntity, new PositionComponent(0, 0));
-        golemMain.world.addComponent(bgEntity, new SceneIdComponent(getSLClass()));
+        golemMain.world.addComponent(bgEntity, new RenderComponent(getSLClass(), bg.z, (RenderSystem rs)->
+            rs.renderTexturesFullScreen(bgEntity)
+        ));
         if (bg.parallax_speedFactor > 0) {
             golemMain.world.addComponent(bgEntity, new ParallaxComponent(bg.parallax_speedFactor, bg.amplitude));
         }
+    }
+
+    private void createFSShaders(FullScreenShaderData sd) {
+        Entity e = golemMain.world.createEntity();
+        golemMain.world.addComponent(e, new RenderComponent(getSLClass(), sd.z, (RenderSystem rs)->
+            rs.renderFsEffect(ShaderType.fromShaderName(sd.name), Optional.ofNullable(sd.params).orElse(new HashMap<>()))
+        ));
     }
 
     private void createSubtitle(SubtitleData subtitle) {
         if (subtitle == null) return;
         if (subtitle.initDelay > 0) {
             golemMain.world.addComponent(golemMain.world.createEntity(), new TimerComponent(subtitle.initDelay,
-                ()->loadDialog(subtitle)));
+                ()-> loadSubtitle(subtitle)));
         } else {
-            loadDialog(subtitle);
+            loadSubtitle(subtitle);
         }
     }
 
-    private void loadDialog(SubtitleData subtitle) {
+    private void loadSubtitle(SubtitleData subtitle) {
         subtitleEntity = golemMain.world.createEntity();
-        golemMain.world.addComponent(subtitleEntity, new SceneIdComponent(getSLClass()));
 
         if (subtitle.text.length == 1) {
             golemMain.world.addComponent(subtitleEntity, new SubtitleComponent(subtitle.text[0], getColor(subtitle.textColor), null));
+            golemMain.world.addComponent(subtitleEntity, new RenderComponent(getSLClass(), SUBTITLE_Z_ORDER, rs->
+                rs.renderSubtitles(subtitleEntity)
+            ));
         } else {
             SubtitleMultilineComponent s = new SubtitleMultilineComponent(Arrays.asList(subtitle.text), getColor(subtitle.textColor), null);
             s.maxLines = subtitle.maxLines;
             s.scrollSpeed = subtitle.scrollSpeed;
             s.endDuration = subtitle.endDuration;
             golemMain.world.addComponent(subtitleEntity, s);
+            golemMain.world.addComponent(subtitleEntity, new RenderComponent(getSLClass(), SUBTITLE_Z_ORDER, rs->
+                rs.renderMultilineSubtitles(subtitleEntity)
+            ));
         }
     }
 
     private void createTexture(TextureData textureData) {
         Entity textureEntity = golemMain.world.createEntity();
         textures.put(textureData.id, textureEntity);
-        TextureComponent tc = new TextureComponent(new Texture(Gdx.files.internal(textureData.path)), false);
-        golemMain.world.addComponent(textureEntity, new SceneIdComponent(getSLClass()));
+        TextureComponent tc = new TextureComponent(
+            new Texture(Gdx.files.internal(textureData.path)));
+        if (textureData.shader != null) {
+            createShader(tc, textureData.shader);
+        }
         golemMain.world.addComponent(textureEntity, tc);
         golemMain.world.addComponent(textureEntity, new PositionComponent(textureData.posX, textureData.posY));
         golemMain.world.addComponent(textureEntity, new SizeComponent(textureData.width, textureData.height));
-        if (textureData.shader != null) {
-            ShaderType type = ShaderType.fromShaderName(textureData.shader);
-            if (type != ShaderType.NONE) {
-                Entity entity  = golemMain.world.getEntityWith(type.shaderComponent).orElseThrow(()->new InvalidShaderName(textureData.shader));
-                tc.shader = golemMain.world.getComponent(entity, ShaderEffectComponent.class);
-                tc.shaderEntity = entity;
+        golemMain.world.addComponent(textureEntity, new RenderComponent(getSLClass(), textureData.z, rs->
+            rs.renderTextures(textureEntity)
+        ));
+    }
+
+    private void createShader(TextureComponent tc, ShaderData sd) {
+        ShaderType type = ShaderType.fromShaderName(sd.shader);
+        if (type != ShaderType.NONE) {
+            Texture texture = null;
+            if (!(sd.shaderTexture == null || sd.shaderTexture.length() <= 0)) {
+                texture = new Texture(Gdx.files.internal(sd.shaderTexture));
             }
+            Map<String, Float> params = sd.shaderParameters==null?new HashMap<>():sd.shaderParameters;
+            Entity entity  = golemMain.world.getEntityWith(type.shaderComponent).orElseThrow(()->new InvalidShaderName(sd.shader));
+            ShaderEffectComponent sec = golemMain.world.getComponent(entity, ShaderEffectComponent.class);
+            tc.setShader(sec, entity, params, texture, type);
         }
     }
 
     public abstract Class<? extends SceneLoader> getSLClass();
 
     public void unload() {
-        // release textures
-        if (bgEntity != null) {
-            disposeTexture(bgEntity);
-        }
         for (Entity entity : textures.values()) {
             disposeTexture(entity);
         }
@@ -142,18 +167,24 @@ public abstract class SceneLoader {
         if (t != null) {
             t.texture.dispose();
             t.texture = null;
+            if (t.shader != null) {
+                t.shader.enabled = false;
+                if (t.shader.shaderTexture != null) {
+                    t.shader.shaderTexture.dispose();
+                }
+            }
         }
     }
 
-    public Entity createDialog(String text, Vector2 position, Runnable onClick, BubbleStyle.BubbleTail bStyle) {
+    protected Entity createDialog(String text, Vector2 position, Runnable onClick, BubbleStyle.BubbleTail bStyle) {
         Entity entity = golemMain.world.createEntity();
-        golemMain.world.addComponent(entity, new SceneIdComponent(getSLClass()));
-        DialogComponent dc = new DialogComponent(text);
-        dc.style.tail = bStyle;
+
+        DialogComponent dc = new DialogComponent(text, new BubbleStyle(bStyle));
         golemMain.world.addComponent(entity, dc);
         Texture t = golemMain.bubbleTextureGenerator.generateBubble(text, dc.style, dc.size);
+
         golemMain.world.addComponent(entity, new PositionComponent(position));
-        golemMain.world.addComponent(entity, new TextureComponent(t, false));
+        golemMain.world.addComponent(entity, new TextureComponent(t));
         golemMain.world.addComponent(entity, new InteractiveComponent( ()->{
             if (onClick != null) onClick.run();
             golemMain.world.addComponent(golemMain.world.createEntity(), new TimerComponent(3f, () ->{
@@ -161,16 +192,21 @@ public abstract class SceneLoader {
                 t.dispose();
             }));
         }, t.getWidth(), t.getHeight()));
+        golemMain.world.addComponent(entity, new RenderComponent(getSLClass(), DIALOG_Z_ORDER, rs->{
+            rs.renderTextures(entity);
+            rs.renderDialog(entity);
+        }));
+
         return entity;
     }
 
     protected void createNextLoaderAction(Entity entity, SceneLoader nextScene) {
         SizeComponent s = golemMain.world.getComponent(entity, SizeComponent.class);
         golemMain.world.addComponent(entity, new InteractiveComponent( ()->{
-            if (golemMain.filterSceneCurrent.filteringClass == getSLClass()) {
+            if (golemMain.sceneCurrent.getSLClass() == getSLClass()) {
                 golemMain.loadScene(nextScene, 1.5f);
             }
-        }, s.width(), s.height()));
+        }, s.size.x, s.size.y));
     }
 
     protected void createTimeAfterSubtitlesForNextScene(float subtitleDelay, SceneLoader nextScene) {
@@ -178,38 +214,20 @@ public abstract class SceneLoader {
         golemMain.world.addComponent(timer, new TimerComponent(subtitleDelay,  ()-> {
             SubtitleMultilineComponent c = golemMain.world.getComponent(subtitleEntity, SubtitleMultilineComponent.class);
             if (c != null) c.onComplete = () -> {
-                if (golemMain.filterSceneCurrent.filteringClass == getSLClass()) {
+                if (golemMain.sceneCurrent.getSLClass() == getSLClass()) {
                     golemMain.loadScene(nextScene, 1.5f);
                 }
             };
         }));
-        golemMain.world.addComponent(timer, new SceneIdComponent(getSLClass()));
         entities.add(timer);
     }
 
     protected void setDefaultActionForLamp(String lampName) {
         Entity lamp = java.util.Objects.requireNonNull(textures.get(lampName), "lamp "+lampName+" is null");
         TextureComponent tc = golemMain.world.getComponent(lamp, TextureComponent.class);
-        golemMain.world.addComponent(lamp, new InteractiveComponent(tc::swapShaders,
+
+        golemMain.world.addComponent(lamp, new InteractiveComponent(tc::turn,
             tc.texture.getWidth(), tc.texture.getHeight()));
     }
 
-/*
-
-    public Entity createGolem(float x, float y) {
-        Entity entity = world.createEntity();
-
-        Array<TextureRegion> frames = new Array<>();
-        frames.add(new TextureRegion(new Texture("lamp_1.png")));
-        frames.add(new TextureRegion(new Texture("lamp_2.png")));
-        frames.add(new TextureRegion(new Texture("lamp_3.png")));
-        frames.add(new TextureRegion(new Texture("lamp_2.png"))); // plynulé zpět
-
-        world.addComponent(entity, new PositionComponent(x, y));
-        world.addComponent(entity, new AnimationComponent(new Animation<>(0.15f, frames, Animation.PlayMode.LOOP), false));
-        world.addComponent(entity, new TextureComponent(new TextureRegion(new Texture(Gdx.files.internal("characters/golem_idle.png"))), false));
-        world.addComponent(entity, new GolemComponent());
-        return entity;
-    }
-*/
 }

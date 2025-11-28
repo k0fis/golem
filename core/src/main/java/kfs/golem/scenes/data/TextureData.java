@@ -9,5 +9,7 @@ public class TextureData {
     public float width;
     public float height;
 
-    public String shader;
+    public ShaderData shader;
+
+    public int z;
 }

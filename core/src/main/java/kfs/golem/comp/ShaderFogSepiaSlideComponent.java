@@ -1,8 +1,11 @@
 package kfs.golem.comp;
 
+import com.badlogic.gdx.math.Vector2;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.ecs.KfsWorld;
+
+import java.util.Map;
 
 public class ShaderFogSepiaSlideComponent implements KfsComp, PostEffectComponent.PecParams {
 
@@ -13,7 +16,7 @@ public class ShaderFogSepiaSlideComponent implements KfsComp, PostEffectComponen
     }
 
     @Override
-    public void setUniforms(Entity entity, PostEffectComponent pec, float delta) {
+    public void setUniforms(Entity entity, Map<String, Float> params, PostEffectComponent pec, Vector2 wSize) {
         TimeComponent tc = world.getComponent(entity, TimeComponent.class);
         pec.shader.setUniformf("u_time", tc.time);
     }

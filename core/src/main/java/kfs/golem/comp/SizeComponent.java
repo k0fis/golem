@@ -14,11 +14,4 @@ public class SizeComponent implements KfsComp {
         this(new Vector2(width, height));
     }
 
-    public float width() {
-        return size.x;
-    }
-
-    public float height() {
-        return size.y;
-    }
 }

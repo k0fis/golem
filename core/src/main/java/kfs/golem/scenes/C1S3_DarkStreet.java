@@ -19,13 +19,12 @@ public class C1S3_DarkStreet extends  SceneLoader {
         super.load();
 
         createDialog(" > > ",
-            new Vector2(1070, 720), () -> golemMain.loadScene(new C1S4_DarkStreet(golemMain), 1.5f),
+            new Vector2(1400, 950), () -> golemMain.loadScene(new C1S4_DarkStreet(golemMain), 1.5f),
             BubbleStyle.BubbleTail.NONE);
 
         createTimeAfterSubtitlesForNextScene(5, new C1S4_DarkStreet(golemMain));
 
         setDefaultActionForLamp("c1s3-lamp-1");
-        setDefaultActionForLamp("c1s3-lamp-2");
     }
 
     @Override

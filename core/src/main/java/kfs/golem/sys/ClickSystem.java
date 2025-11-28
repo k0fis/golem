@@ -12,6 +12,8 @@ public class ClickSystem implements KfsSystem {
 
     private final GolemMain golemMain;
 
+    private RenderSystem rs = null;
+
     public ClickSystem(GolemMain golemMain) {
         this.golemMain = golemMain;
     }
@@ -25,6 +27,12 @@ public class ClickSystem implements KfsSystem {
         if (Gdx.input.isTouched()) {
             lastClickTime = clickTime;
             Vector2 click = new Vector2(Gdx.input.getX(), (Gdx.graphics.getHeight() - Gdx.input.getY()));
+            if (rs == null) {
+                rs = golemMain.world.getSystem(RenderSystem.class);
+            }
+            if (rs != null) {
+                click.scl(1.0f/rs.scale);
+            }
             Gdx.app.log("ClickSystem", "Click "+click);
             golemMain.world.addComponent(golemMain.world.createEntity(), new ClickComponent(click));
         }

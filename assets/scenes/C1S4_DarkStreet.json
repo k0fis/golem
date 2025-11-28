@@ -2,35 +2,54 @@
   "background": {
     "file": "images/dark_street.png",
     "parallax_speedFactor": 0,
-    "amplitude": 5
+    "amplitude": 5,
+    "z": 0
   },
   "textures": [
     {
       "id" : "c1s4-lamp-1",
       "path":  "textures/lamp.png",
-      "posX" : 378,
-      "posY":  510,
-      "width": 80,
-      "height": 130,
-      "shader": "LAMP"
+      "posX" : 484,
+      "posY":  658,
+      "width": 110,
+      "height": 170,
+      "shader": {"shader": "LAMP"},
+      "z" : 1,
+      "inx": 1
     },
     {
-      "id" : "c1s4-lamp-2",
-      "path":  "textures/lamp.png",
-      "posX" : 748,
-      "posY":  510,
-      "width": 80,
-      "height": 130,
-      "shader": "LAMP"
-    },
-    {
-        "id" : "c1s4-doors",
-        "path":  "textures/dark_street_door.png",
-        "posX" : 756,
-        "posY":  78,
-        "width": 140,
-        "height": 406,
+      "id": "c1s4-doors",
+      "path": "textures/dark_street_door.png",
+      "posX": 980,
+      "posY": 145,
+      "width": 160,
+      "height": 466,
+      "shader": {
         "shader": "OUTLINE"
+      },
+      "z": 1,
+      "inx": 3
+    },
+    {
+      "id": "c1s4-cat",
+      "path": "textures/cat-1.png",
+      "posX": 356,
+      "posY": 78,
+      "width": 80,
+      "height": 66,
+      "shader": {
+        "shader": "OUTLINE2",
+        "shaderTexture": "textures/cat-outline.png",
+        "shaderParameters": {
+          "outlineColorR": 0.8,
+          "outlineColorG": 0.8,
+          "outlineColorB": 0.9,
+          "pulseDuration": 0.01,
+          "pulseInterval": 8.0
+        }
+      },
+      "z": 1,
+      "inx": 1
     }
   ]
 }

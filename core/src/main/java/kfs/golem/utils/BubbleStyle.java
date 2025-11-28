@@ -18,4 +18,12 @@ public class BubbleStyle {
     public float tailSize = 20f;
     public float maxWidth = 300f;
     public BubbleTail tail = BubbleTail.DOWN;
+
+    public BubbleStyle() {
+        this(BubbleTail.DOWN);
+    }
+
+    public BubbleStyle(BubbleTail tail) {
+        this.tail = tail;
+    }
 }

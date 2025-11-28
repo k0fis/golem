@@ -1,6 +1,7 @@
 package kfs.golem._backup;
 
 import kfs.golem.GolemMain;
+import kfs.golem.comp.AnimationComponent;
 import kfs.golem.comp.TextureComponent;
 import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsSystem;

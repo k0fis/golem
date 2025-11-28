@@ -15,7 +15,7 @@ public class C1S1_Prague extends SceneLoader {
         super.load();
         createTimeAfterSubtitlesForNextScene(5, new C1S2_Bridge(golemMain));
 
-        createDialog(" > > ", new Vector2(1070, 720), () ->
+        createDialog("> >", new Vector2(1400, 950), () ->
                 golemMain.loadScene(new C1S2_Bridge(golemMain), 1.5f), BubbleStyle.BubbleTail.NONE);
 
 

@@ -9,6 +9,8 @@ import kfs.golem.ecs.Entity;
 import kfs.golem.ecs.KfsComp;
 import kfs.golem.utils.ShaderEffectCompileException;
 
+import java.util.Map;
+
 public class ShaderEffectComponent implements KfsComp {
 
     public final ShaderProgram shader;
@@ -26,15 +28,15 @@ public class ShaderEffectComponent implements KfsComp {
         shader.dispose();
     }
 
-    public void apply(Batch batch, Texture texture, Entity entity, Vector2 position, Vector2 size) {
+    public void apply(Batch batch, Texture texture, Map<String, Float> texParams, Entity entity, Vector2 position, Vector2 size) {
         batch.setShader(shader);
-        params.setUniforms(entity, this);
+        params.setUniforms(entity, texParams, this, size);
         batch.draw(texture, position.x, position.y, size.x, size.y);
         batch.setShader(null);
     }
 
     public interface PecParams {
-        void setUniforms(Entity entity, ShaderEffectComponent pec);
+        void setUniforms(Entity entity, Map<String, Float> params, ShaderEffectComponent pec, Vector2 size);
     }
 
 

@@ -1,10 +1,94 @@
 {
   "background": {
-    "file": "images/prague_mid.png",
+    "file": "images/rabi_workshop-1.png",
     "parallax_speedFactor": 0,
-    "amplitude": 5
+    "z": 1
   },
-  "shaders": [
-    "FOG_ROLLING"
+  "shaders": [{
+    "name": "FOG_AURA",
+    "z": 100,
+    "params": {
+      "intensity": 0.69,
+      "ceiling": 0.8,
+      "colorR": 0.3,
+      "colorG": 0.4,
+      "colorB": 1.0,
+      "speed": 1.0,
+      "detail": 3.0,
+      "falloff": 1.4
+    }
+  }],
+  "textures": [
+    {
+      "id": "candle_flicker-1",
+      "path": "textures/candle_flicker40.png",
+      "posX": -5,
+      "posY": 400,
+      "width": 40,
+      "height": 60,
+      "shader": {"shader": "CANDLE_FLICKER"},
+      "z" : 200
+    },
+    {
+      "id": "candle_flicker-2",
+      "path": "textures/candle_flicker40.png",
+      "posX": 96,
+      "posY": 530,
+      "width": 35,
+      "height": 50,
+      "shader": {"shader": "CANDLE_FLICKER" },
+      "z" : 200
+    },
+    {
+      "id": "candle_flicker-3",
+      "path": "textures/candle_flicker40.png",
+      "posX": 251,
+      "posY": 545,
+      "width": 35,
+      "height": 50,
+      "shader": {"shader": "CANDLE_FLICKER" },
+      "z" : 200
+    },
+    {
+      "id": "candle_flicker-4",
+      "path": "textures/candle_flicker40.png",
+      "posX": 488,
+      "posY": 568,
+      "width": 35,
+      "height": 50,
+      "shader": {"shader": "CANDLE_FLICKER" },
+      "z" : 200
+    },
+    {
+      "id": "candle_flicker-5",
+      "path": "textures/candle_flicker40.png",
+      "posX": 967,
+      "posY": 490,
+      "width": 40,
+      "height": 60,
+      "shader": {"shader": "CANDLE_FLICKER" },
+      "z" : 200
+    },
+    {
+      "id": "candle_flicker-6",
+      "path": "textures/candle_flicker40.png",
+      "posX": 1120,
+      "posY": 371,
+      "width": 40,
+      "height": 60,
+      "shader": {"shader": "CANDLE_FLICKER" },
+      "z" : 200
+    },
+    {
+      "id": "cat-1",
+      "path": "textures/cat-3.png",
+      "posX": 1120,
+      "posY": 290,
+      "width": 75,
+      "height": 110,
+      "z" : 300
+    }
+
+
   ]
 }

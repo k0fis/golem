@@ -11,10 +11,12 @@ public enum ShaderType {
     FOG2(ShaderFog2Component.class),
     FOG_ROLLING(ShaderFogRollingComponent.class),
     FOG_SEPIA_SLIDE(ShaderFogSepiaSlideComponent.class),
+    FOG_AURA(ShaderFogAuraComponent.class),
 
     LAMP(ShaderLampComponent.class),
     OUTLINE(ShaderOutlineComponent.class),
-
+    OUTLINE2(ShaderOutline2Component.class),
+    CANDLE_FLICKER(ShaderCandleFlickerComponent.class),
     ;
 
     public final Class<?extends KfsComp> shaderComponent;

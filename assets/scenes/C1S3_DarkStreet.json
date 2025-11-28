@@ -2,27 +2,20 @@
   "background": {
     "file": "images/dark_street.png",
     "parallax_speedFactor": 0.1,
-    "amplitude": 5
+    "amplitude": 5,
+    "z": 0
   },
-  "shaders": ["FOG2"],
+  "shaders": [ { "name": "FOG2", "z": 100} ],
   "textures": [
     {
       "id" : "c1s3-lamp-1",
       "path":  "textures/lamp.png",
-      "posX" : 378,
-      "posY":  510,
-      "width": 80,
-      "height": 130,
-      "shader": "LAMP"
-    },
-    {
-      "id" : "c1s3-lamp-2",
-      "path":  "textures/lamp.png",
-      "posX" : 748,
-      "posY":  510,
-      "width": 80,
-      "height": 130,
-      "shader": "LAMP"
+      "posX" : 484,
+      "posY":  658,
+      "width": 110,
+      "height": 170,
+      "shader": {"shader": "LAMP"},
+      "z" : 90
     }
   ],
 

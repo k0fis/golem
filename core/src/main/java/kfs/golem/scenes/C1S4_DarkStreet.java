@@ -18,7 +18,6 @@ public class C1S4_DarkStreet extends  SceneLoader {
         createNextLoaderAction(doorOutline, new C1S5_AlchemystWorkShop(golemMain));
 
         setDefaultActionForLamp("c1s4-lamp-1");
-        setDefaultActionForLamp("c1s4-lamp-2");
     }
 
     @Override
