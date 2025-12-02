@@ -3,6 +3,7 @@ package kfs.golem.comp;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import kfs.golem.ecs.Entity;
@@ -21,6 +22,16 @@ public class ShaderEffectComponent implements KfsComp {
         shader = new ShaderProgram(Gdx.files.internal(vert), Gdx.files.internal(frag));
         if (!shader.isCompiled()) {
             throw new ShaderEffectCompileException(vert, frag, shader.getLog());
+        }
+    }
+
+    public ShaderEffectComponent(String frag, PecParams params) {
+        this.params = params;
+        shader = new ShaderProgram(
+            SpriteBatch.createDefaultShader().getVertexShaderSource(),
+            Gdx.files.internal(frag).readString());
+        if (!shader.isCompiled()) {
+            throw new ShaderEffectCompileException(frag, shader.getLog());
         }
     }
 

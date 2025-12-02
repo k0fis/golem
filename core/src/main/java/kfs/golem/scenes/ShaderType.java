@@ -19,6 +19,7 @@ public enum ShaderType {
     OUTLINE(ShaderOutlineComponent.class),
     OUTLINE2(ShaderOutline2Component.class),
     CANDLE_FLICKER(ShaderCandleFlickerComponent.class),
+    SYMBOL(ShaderSymbolComponent.class)
     ;
 
     public final Class<?extends KfsComp> shaderComponent;

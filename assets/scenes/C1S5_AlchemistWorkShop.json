@@ -77,7 +77,12 @@
       "posY": 490,
       "width": 40,
       "height": 60,
-      "shader": {"shader": "CANDLE_FLICKER" },
+      "shader": {"shader": "CANDLE_FLICKER",
+        "params": {
+          "duration" : 3,
+          "fade" : 0.4
+        }
+      },
       "z" : 200
     },
     {
@@ -98,6 +103,26 @@
       "width": 75,
       "height": 110,
       "z" : 300
+    },
+
+    {
+      "id": "symbol-1",
+      "path": "textures/symbol.png",
+      "posX": 600,
+      "posY": 500,
+      "width": 200,
+      "height": 200,
+      "z": 360
+    },
+    {
+      "id": "symbol-2",
+      "path": "textures/symbol-outline.png",
+      "posX": 600,
+      "posY": 500,
+      "width": 200,
+      "height": 200,
+      "z": 370,
+      "shader": {"shader": "SYMBOL" }
     }
 
 
